@@ -1,3 +1,8 @@
 import { Routes } from '@angular/router';
+import {ShopComponent} from './pages/shop/shop.component';
+import {ItemComponent} from './pages/item/item.component';
 
-export const routes: Routes = [];
+export const routes: Routes = [
+  {path: '', component: ShopComponent, pathMatch: 'full'},
+  {path: 'item/:id', component: ItemComponent}
+];
