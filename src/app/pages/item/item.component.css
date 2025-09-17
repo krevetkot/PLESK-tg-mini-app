@@ -1,0 +1,44 @@
+.add-btns-container {
+  width: 100%;
+  gap: 15px;
+}
+
+.add-to-cart-1-item-btn {
+  background: #0056b3;
+  color: white;
+  width: 50%;
+  border-radius: 50px;
+  padding: 20px;
+  border: none;
+  cursor: pointer;
+}
+
+.add-to-cart-1-box-btn {
+  background: #5682b2;
+  width: 50%;
+  color: white;
+  border-radius: 50px;
+  padding: 20px;
+  border: none;
+  cursor: pointer;
+}
+
+.item-image-container {
+  display: grid;
+  place-items: center; /* Волшебное свойство - и по горизонтали и по вертикали */
+  width: 100%;
+  /*height: 400px;*/
+  background: #e0e0e0;
+}
+
+.product-info {
+  text-align: left;
+}
+
+.item-info-table{
+  width: 95%;
+}
+
+.right-column {
+  text-align: right;
+}

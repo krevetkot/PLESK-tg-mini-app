@@ -1,0 +1,77 @@
+<!-- Фиксированная строка поиска -->
+<div class="search-header" [class.sticky]="isSticky">
+  <div class="search-container">
+    <div class="search-box">
+      <input
+        type="text"
+        [(ngModel)]="searchTerm"
+        (input)="searchProducts()"
+        placeholder="Поиск товаров..."
+        class="search-input"
+      >
+      <button
+        *ngIf="searchTerm"
+        (click)="clearSearch()"
+        class="clear-btn"
+      >
+        ×
+      </button>
+    </div>
+    <div class="search-results" *ngIf="searchTerm">
+      Найдено: {{ filteredProducts.length }} товаров
+    </div>
+  </div>
+</div>
+
+<div class="products-container">
+  <!-- Загрузка -->
+  @if (loading) {
+  <div class="loading">
+    <div class="spinner"></div>
+    <p>Загружаем товары...</p>
+  </div>
+  }
+
+  <!-- Сообщение если нет товаров -->
+  @if (!loading && filteredProducts.length === 0) {
+    <div class="no-products">
+      @if (searchTerm) {
+        <h3>Товары не найдены</h3>
+        <p>Попробуйте изменить запрос</p>
+      } @else {
+        <h3>Товары не найдены</h3>
+        <p>Попробуйте зайти позже</p>
+      }
+    </div>
+  }
+
+  <!-- Сетка товаров -->
+  @if (!loading && filteredProducts.length > 0) {
+  <div class="products-grid">
+    @for (product of filteredProducts; track product.id) {
+      <div class="product-card" (click)="navigateToItemPage(product.id)">
+        <!-- Изображение товара -->
+        <div class="product-image-container" [class.out-of-stock]="product.stock === 0">
+          <img [src]="product.imageUrl" [alt]="product.name" loading="lazy" class="product-img">
+        </div>
+
+        <div class="product-info">
+          <h3 class="product-name">{{ product.name }}</h3>
+          <p class="product-stock"> {{ getStockText(product.stock) }}</p>
+          <div class="product-price">
+            {{ product.price | number:'1.2-2' }} ₽
+          </div>
+<!--          <button class="add-to-cart-btn" [disabled]="product.stock === 0">-->
+<!--            {{ product.stock === 0 ? 'Нет в наличии' : 'В корзину' }}-->
+<!--          </button>-->
+        </div>
+      </div>
+    } @empty {
+  <div class="no-products">
+    <h3>Товары не найдены</h3>
+    <p>Попробуйте зайти позже</p>
+  </div>
+  }
+  </div>
+  }
+</div>
