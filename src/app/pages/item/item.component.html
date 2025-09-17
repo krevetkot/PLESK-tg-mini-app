@@ -35,11 +35,27 @@
     </div>
 
     <div class="add-btns-container">
-      <button class="add-to-cart-1-item-btn" [disabled]="product.stock === 0">
-        {{ product.stock === 0 ? 'Нет в наличии' : 'Добавить 1 шт.' }}
+      <!-- Левая кнопка (1 шт) -->
+      @if (addedQuantity === 0) {
+      <button class="add-to-cart-1-item-btn" (click)="addToCart(1)" [disabled]="product.stock === 0">
+      {{ product.stock === 0 ? 'Нет в наличии' : 'Добавить 1 шт.' }}
       </button>
-      <button class="add-to-cart-1-box-btn" [disabled]="product.stock === 0">
-        {{ product.stock === 0 ? 'Нет в наличии' : 'Добавить 1 кор.' }}
+      } @else {
+      <div class="quantity-controls">
+        <button class="quantity-btn minus" (click)="decreaseQuantity()">
+          −
+        </button>
+        <span class="quantity-display">{{ addedQuantity }} шт.</span>
+          <button class="quantity-btn plus" (click)="increaseQuantity()"
+                  [disabled]="addedQuantity >= product.stock">
+            +
+          </button>
+        </div>
+      }
+
+      <!-- Правая кнопка (1 кор) -->
+      <button class="add-to-cart-1-box-btn" (click)="addToCart(product.number_in_box)" [disabled]="product.stock === 0">
+      {{ product.stock === 0 ? 'Нет в наличии' : 'Добавить 1 кор.' }}
       </button>
     </div>
   </div>

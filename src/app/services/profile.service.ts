@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
-import { Profile} from './profile';
+import { Profile} from '../models/profile';
 import { Observable, of } from 'rxjs';
-import {Order} from './order';
+import {Order} from '../models/order';
 
 @Injectable({
   providedIn: 'root'

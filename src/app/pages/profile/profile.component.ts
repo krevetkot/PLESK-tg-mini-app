@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 
-import {Profile} from '../profile';
-import {Order} from '../order';
-import {ProfileService} from '../profile.service';
+import {Profile} from '../../models/profile';
+import {Order} from '../../models/order';
+import {ProfileService} from '../../services/profile.service';
 import {CommonModule} from '@angular/common';
 import {FormsModule} from '@angular/forms';
 

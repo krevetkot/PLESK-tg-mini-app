@@ -1,0 +1,94 @@
+<div class="cart-container">
+  <!-- Пустая корзина -->
+  @if (isEmpty) {
+  <div class="empty-cart">
+    <div class="cart-icon">🛒</div>
+    <h2>Корзина пуста</h2>
+    <p>Добавьте товары для оформления заказа</p>
+    <button class="continue-shopping-btn" (click)="continueShopping()">
+      Вернуться к покупкам
+    </button>
+  </div>
+  }
+
+  <!-- Корзина с товарами -->
+  @if (!isEmpty) {
+  <div class="cart-content">
+    <h1 class="cart-title">Корзина</h1>
+
+    <div class="cart-items">
+      @for (item of orderItems; track item.product.id) {
+  <div class="cart-item">
+    <div class="item-image">
+      <img [src]="item.product.imageUrl" [alt]="item.product.name" loading="lazy">
+    </div>
+
+    <div class="item-details">
+      <h3 class="item-name">{{ item.product.name }}</h3>
+      <p class="item-price">{{ item.product.price | number:'1.2-2' }} ₽/шт</p>
+    </div>
+
+    <div class="quantity-controls">
+      <button
+        class="quantity-btn minus"
+        (click)="decreaseQuantity(item)"
+        [disabled]="item.quantity <= 1"
+      >
+        −
+      </button>
+
+      <input
+        type="number"
+        [value]="item.quantity"
+        (change)="updateQuantity(item, $event)"
+        min="1"
+        class="quantity-input"
+      >
+
+      <button
+        class="quantity-btn plus"
+        (click)="increaseQuantity(item)"
+      >
+        +
+      </button>
+    </div>
+
+    <div class="item-total">
+      <span class="total-price">{{ (item.product.price * item.quantity) | number:'1.2-2' }} ₽</span>
+    </div>
+
+    <button class="remove-btn" (click)="removeItem(item.product.id)">
+      ×
+    </button>
+  </div>
+  }
+  </div>
+
+  <!-- Блок оформления заказа -->
+  <div class="checkout-section">
+    <div class="shipping-date">
+      <label for="shippingDate">Дата отгрузки:</label>
+      <input
+        type="date"
+        id="shippingDate"
+        [(ngModel)]="shippingDate"
+        [min]="getShippingMinDate()"
+        [max]="getShippingMaxDate()"
+        class="date-input"
+      >
+    </div>
+
+    <div class="order-summary">
+      <div class="total-line">
+        <span>Итого:</span>
+        <span class="total-amount">{{ totalAmount | number:'1.2-2' }} ₽</span>
+          </div>
+
+          <button class="checkout-btn" (click)="checkout()">
+            Оформить заказ
+          </button>
+        </div>
+      </div>
+    </div>
+  }
+</div>

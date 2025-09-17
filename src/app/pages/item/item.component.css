@@ -233,3 +233,79 @@
     font-size: 14px;
   }
 }
+
+
+
+
+/* Стили для управления количеством */
+.quantity-controls {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  background: #f8f9fa;
+  padding: 15px 20px;
+  border-radius: 50px;
+  border: 2px solid #e9ecef;
+}
+
+.quantity-btn {
+  width: 40px;
+  height: 40px;
+  border: 2px solid #007bff;
+  background: white;
+  border-radius: 50%;
+  font-size: 18px;
+  font-weight: 600;
+  color: #007bff;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.quantity-btn:hover:not(:disabled) {
+  background: #007bff;
+  color: white;
+  transform: scale(1.1);
+}
+
+.quantity-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  border-color: #6c757d;
+  color: #6c757d;
+}
+
+.quantity-btn:disabled:hover {
+  background: white;
+  color: #6c757d;
+  transform: none;
+}
+
+.quantity-display {
+  font-size: 18px;
+  font-weight: 600;
+  color: #333;
+  min-width: 60px;
+  text-align: center;
+}
+
+/* Адаптивность для кнопок количества */
+@media (max-width: 480px) {
+  .quantity-controls {
+    padding: 12px 15px;
+    gap: 10px;
+  }
+
+  .quantity-btn {
+    width: 35px;
+    height: 35px;
+    font-size: 16px;
+  }
+
+  .quantity-display {
+    font-size: 16px;
+    min-width: 50px;
+  }
+}

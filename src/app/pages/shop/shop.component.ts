@@ -1,6 +1,6 @@
 import {Component, HostListener} from '@angular/core';
-import {Product} from '../product';
-import {ProductService} from '../product.service';
+import {Product} from '../../models/product';
+import {ProductService} from '../../services/product.service';
 import {CommonModule} from '@angular/common';
 import {FormsModule} from '@angular/forms';
 import { Router } from '@angular/router';
