@@ -1,41 +1,46 @@
-<div class="item-image-container" [class.out-of-stock]="product.stock === 0">
-  <img [src]="product.imageUrl" [alt]="product.name" loading="lazy" class="item-img">
-</div>
-<div class="product-info">
-  <h2 class="product-name">{{ product.name }}</h2>
-  <div class="product-price">
-    {{ product.price}} ₽
+<div class="item-container">
+  <div class="item-image-container" [class.out-of-stock]="product.stock === 0">
+    <img [src]="product.imageUrl" [alt]="product.name" loading="lazy" class="item-img">
   </div>
-  <p>{{product.description}}</p>
 
-  <table class="item-info-table">
-    <thead><b>Характеристики</b>:</thead>
-    <tbody>
-      <tr>
-        <td class="left-column">Страна производитель:</td>
-        <td class="right-column">{{product.origin_country}}</td>
-      </tr>
-      <tr>
-        <td class="left-column">В наличии:</td>
-        <td class="right-column">{{product.stock}}</td>
-      </tr>
-      <tr>
-        <td class="left-column">Количество в коробке:</td>
-        <td class="right-column">{{product.number_in_box}}</td>
-      </tr>
-      <tr>
-        <td class="left-column">Артикул:</td>
-        <td class="right-column">{{product.id}}</td>
-      </tr>
-    </tbody>
-  </table>
+  <div class="product-info">
+    <h2 class="product-name">{{ product.name }}</h2>
+    <div class="product-price">
+      {{ product.price | number:'1.2-2' }} ₽
+    </div>
+    <p class="product-description">{{product.description}}</p>
 
-  <div class="add-btns-container">
-    <button class="add-to-cart-1-item-btn" [disabled]="product.stock === 0">
-      {{ product.stock === 0 ? 'Нет в наличии' : 'Добавить 1 шт.' }}
-    </button>
-    <button class="add-to-cart-1-box-btn" [disabled]="product.stock === 0">
-      {{ product.stock === 0 ? 'Нет в наличии' : 'Добавить 1 кор.' }}
-    </button>
+    <div class="specs-container">
+      <h3 class="specs-title">Характеристики</h3>
+      <table class="item-info-table">
+        <tbody>
+        <tr>
+          <td class="left-column">Страна производитель:</td>
+          <td class="right-column">{{product.origin_country}}</td>
+        </tr>
+        <tr>
+          <td class="left-column">В наличии:</td>
+          <td class="right-column">{{product.stock}} шт.</td>
+        </tr>
+        <tr>
+          <td class="left-column">Количество в коробке:</td>
+          <td class="right-column">{{product.number_in_box}} шт.</td>
+        </tr>
+        <tr>
+          <td class="left-column">Артикул:</td>
+          <td class="right-column">{{product.id}}</td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="add-btns-container">
+      <button class="add-to-cart-1-item-btn" [disabled]="product.stock === 0">
+        {{ product.stock === 0 ? 'Нет в наличии' : 'Добавить 1 шт.' }}
+      </button>
+      <button class="add-to-cart-1-box-btn" [disabled]="product.stock === 0">
+        {{ product.stock === 0 ? 'Нет в наличии' : 'Добавить 1 кор.' }}
+      </button>
+    </div>
   </div>
 </div>

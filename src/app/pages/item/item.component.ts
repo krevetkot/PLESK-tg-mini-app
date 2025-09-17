@@ -1,9 +1,12 @@
 import { Component } from '@angular/core';
 import {Product} from '../product';
+import {CommonModule} from '@angular/common';
+import {FormsModule} from '@angular/forms';
 
 @Component({
   selector: 'app-item',
-  imports: [],
+  standalone: true,
+  imports: [CommonModule, FormsModule],
   templateUrl: './item.component.html',
   styleUrl: './item.component.css'
 })
