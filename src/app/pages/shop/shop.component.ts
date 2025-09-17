@@ -19,6 +19,10 @@ export class ShopComponent {
   searchTerm: string = '';
   isSticky: boolean = false;
 
+  categories: string[] = [];
+  selectedCategory: string = 'Все';
+  selectedSort: string = 'name';
+
   constructor(private productService: ProductService, private router: Router) {}
 
   ngOnInit(): void {
@@ -26,6 +30,7 @@ export class ShopComponent {
       next: (products) => {
         this.products = products;
         this.filteredProducts = products;
+        this.sortProducts(); // Сортировка по умолчанию
         this.loading = false;
       },
       error: (error) => {
@@ -33,6 +38,46 @@ export class ShopComponent {
         this.loading = false;
       }
     });
+
+    this.productService.getCategories().subscribe({
+      next: (categories) => {
+        this.categories = categories;
+      },
+      error: (error) => {
+        console.error('Ошибка загрузки товаров:', error);
+        this.loading = false;
+      }
+    });
+  }
+
+  // Фильтрация по категориям
+  filterByCategory(category: string): void {
+    this.selectedCategory = category;
+
+    if (category === 'Все') {
+      this.filteredProducts = this.products;
+    } else {
+      this.filteredProducts = this.products.filter(product =>
+        product.category === category
+      );
+    }
+
+    this.sortProducts(); // Применяем текущую сортировку
+  }
+
+  // Сортировка товаров
+  sortProducts(): void {
+    switch (this.selectedSort) {
+      case 'name':
+        this.filteredProducts.sort((a, b) => a.name.localeCompare(b.name));
+        break;
+      case 'price-asc':
+        this.filteredProducts.sort((a, b) => a.price - b.price);
+        break;
+      case 'price-desc':
+        this.filteredProducts.sort((a, b) => b.price - a.price);
+        break;
+    }
   }
 
   getStockClass(stock: number): string {
@@ -50,18 +95,23 @@ export class ShopComponent {
   searchProducts(): void {
     if (!this.searchTerm.trim()) {
       this.filteredProducts = this.products;
+      this.filterByCategory(this.selectedCategory); // Возвращаем фильтр по категории
       return;
     }
 
     const term = this.searchTerm.toLowerCase().trim();
     this.filteredProducts = this.products.filter(product =>
-      product.name.toLowerCase().includes(term)
+      product.name.toLowerCase().includes(term) ||
+      product.category.toLowerCase().includes(term)
     );
+
+    this.sortProducts(); // Применяем сортировку к результатам поиска
   }
 
   clearSearch(): void {
     this.searchTerm = '';
     this.filteredProducts = this.products;
+    this.filterByCategory(this.selectedCategory); // Возвращаем фильтр по категории
   }
 
   @HostListener('window:scroll', [])
@@ -70,7 +120,6 @@ export class ShopComponent {
   }
 
   navigateToItemPage(id: string): void {
-    const address = '/item/' + id
-    this.router.navigate([address]).then(r => console.error(id));
+    this.router.navigate(['/item', id]);
   }
 }

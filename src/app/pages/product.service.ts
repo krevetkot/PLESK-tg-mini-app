@@ -6,10 +6,12 @@ import {Observable, of} from 'rxjs';
   providedIn: 'root'
 })
 export class ProductService {
+  private categories = ['Все', 'Электроника', 'Одежда', 'Книги']; //при подключении бд, я их выгружу оттуда
   private products: Product[] = [
     {
       id: 'sku-1',
       name: 'iPhone 15 Pro',
+      category: 'Электроника',
       price: 999.99,
       stock: 0,
       number_in_box: 1,
@@ -21,6 +23,7 @@ export class ProductService {
       id: 'sku-2',
       name: 'Samsung Galaxy S24',
       price: 899.99,
+      category: 'Книги',
       stock: 18,
       number_in_box: 1,
       imageUrl: '1.bmp',
@@ -30,6 +33,7 @@ export class ProductService {
     {
       id: 'sku-3',
       name: 'MacBook Air M2',
+      category: 'Электроника',
       price: 1299.99,
       stock: 12,
       number_in_box: 1,
@@ -40,6 +44,7 @@ export class ProductService {
     {
       id: 'sku-4',
       name: 'Sony PlayStation 5',
+      category: 'Электроника',
       price: 499.99,
       stock: 8,
       number_in_box: 1,
@@ -50,6 +55,7 @@ export class ProductService {
     {
       id: 'sku-5',
       name: 'Nike Air Max',
+      category: 'Одежда',
       price: 129.99,
       stock: 42,
       number_in_box: 1,
@@ -60,6 +66,7 @@ export class ProductService {
     {
       id: 'sku-6',
       name: 'Apple Watch Series 9',
+      category: 'Одежда',
       price: 399.99,
       stock: 30,
       number_in_box: 1,
@@ -71,6 +78,10 @@ export class ProductService {
 
   getProducts(): Observable<Product[]> {
     return of(this.products);
+  }
+
+  getCategories(): Observable<string[]>{
+    return of(this.categories);
   }
 
   // getProduct(id: number): Observable<Product | undefined> {

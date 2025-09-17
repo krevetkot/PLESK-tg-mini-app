@@ -23,7 +23,33 @@
   </div>
 </div>
 
+<!-- Кнопки фильтрации -->
+<div class="filters-container" [class.sticky]="isSticky">
+  <div class="filters">
+    <button
+      *ngFor="let category of categories"
+      (click)="filterByCategory(category)"
+      [class.active]="selectedCategory === category"
+      class="filter-btn"
+    >
+      {{ category }}
+    </button>
+  </div>
+</div>
+
 <div class="products-container">
+  <!-- Заголовок и сортировка -->
+  <div class="products-header">
+    <h2 class="products-title">Все товары</h2>
+    <div class="sort-container">
+      <select [(ngModel)]="selectedSort" (change)="sortProducts()" class="sort-select">
+        <option value="name">По алфавиту</option>
+        <option value="price-asc">По возрастанию цены</option>
+        <option value="price-desc">По убыванию цены</option>
+      </select>
+    </div>
+  </div>
+
   <!-- Загрузка -->
   @if (loading) {
   <div class="loading">
@@ -34,42 +60,34 @@
 
   <!-- Сообщение если нет товаров -->
   @if (!loading && filteredProducts.length === 0) {
-    <div class="no-products">
-      @if (searchTerm) {
-        <h3>Товары не найдены</h3>
-        <p>Попробуйте изменить запрос</p>
-      } @else {
-        <h3>Товары не найдены</h3>
-        <p>Попробуйте зайти позже</p>
-      }
-    </div>
+  <div class="no-products">
+    @if (searchTerm) {
+  <h3>Товары не найдены</h3>
+  <p>Попробуйте изменить запрос</p>
+  } @else {
+  <h3>Товары не найдены</h3>
+  <p>Попробуйте зайти позже</p>
+  }
+  </div>
   }
 
   <!-- Сетка товаров -->
   @if (!loading && filteredProducts.length > 0) {
   <div class="products-grid">
     @for (product of filteredProducts; track product.id) {
-      <div class="product-card" (click)="navigateToItemPage(product.id)">
-        <!-- Изображение товара -->
-        <div class="product-image-container" [class.out-of-stock]="product.stock === 0">
-          <img [src]="product.imageUrl" [alt]="product.name" loading="lazy" class="product-img">
-        </div>
+  <div class="product-card" (click)="navigateToItemPage(product.id)">
+    <!-- Изображение товара -->
+    <div class="product-image-container" [class.out-of-stock]="product.stock === 0">
+      <img [src]="product.imageUrl" [alt]="product.name" loading="lazy" class="product-img">
+    </div>
 
-        <div class="product-info">
-          <h3 class="product-name">{{ product.name }}</h3>
-          <p class="product-stock"> {{ getStockText(product.stock) }}</p>
-          <div class="product-price">
-            {{ product.price | number:'1.2-2' }} ₽
-          </div>
-<!--          <button class="add-to-cart-btn" [disabled]="product.stock === 0">-->
-<!--            {{ product.stock === 0 ? 'Нет в наличии' : 'В корзину' }}-->
-<!--          </button>-->
-        </div>
+    <div class="product-info">
+      <h3 class="product-name">{{ product.name }}</h3>
+      <p class="product-stock"> {{ getStockText(product.stock) }}</p>
+      <div class="product-price">
+        {{ product.price | number:'1.2-2' }} ₽
       </div>
-    } @empty {
-  <div class="no-products">
-    <h3>Товары не найдены</h3>
-    <p>Попробуйте зайти позже</p>
+    </div>
   </div>
   }
   </div>

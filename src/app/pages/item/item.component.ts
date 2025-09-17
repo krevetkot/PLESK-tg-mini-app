@@ -12,6 +12,7 @@ export class ItemComponent {
     id: 'sku-6',
     name: 'Apple Watch Series 9',
     price: 399.99,
+    category: 'Электроника',
     stock: 30,
     number_in_box: 1,
     imageUrl: '1.bmp',

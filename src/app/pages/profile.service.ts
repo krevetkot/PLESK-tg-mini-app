@@ -26,15 +26,16 @@ export class ProfileService {
       items: [
         {
           quantity: 1,
-          product: {
-          id: 'sku-5',
-          name: 'Nike Air Max',
-          price: 129.99,
-          stock: 42,
-          number_in_box: 1,
-          imageUrl: '1.bmp',
-          description: 'Спортивная обувь премиум класса',
-          origin_country: 'Russian'
+          product:     {
+            id: 'sku-1',
+            name: 'iPhone 15 Pro',
+            category: 'Электроника',
+            price: 999.99,
+            stock: 0,
+            number_in_box: 1,
+            imageUrl: '1.bmp',
+            description: 'Флагманский смартфон от Apple',
+            origin_country: 'Russian'
           },
           total: 129.99
         }
