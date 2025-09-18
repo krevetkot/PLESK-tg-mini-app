@@ -24,14 +24,14 @@ export class CartService {
     if (existingItem) {
       // Увеличиваем количество, но не больше максимума
       const newQuantity = existingItem.quantity + quantity;
-      existingItem.quantity = Math.min(newQuantity, product.stock);
+      existingItem.quantity = newQuantity;
       existingItem.total = existingItem.quantity * existingItem.product.price;
     } else {
       // Добавляем новый товар
       const newItem: OrderItem = {
-        quantity: Math.min(quantity, product.stock),
+        quantity: quantity,
         product: product,
-        total: Math.min(quantity, product.stock) * product.price
+        total: quantity * product.price
       };
       this.orderItems.push(newItem);
     }
@@ -47,7 +47,7 @@ export class CartService {
       if (quantity <= 0) {
         this.removeFromCart(productId);
       } else {
-        item.quantity = Math.min(quantity, item.product.stock);
+        item.quantity = quantity;
         item.total = item.quantity * item.product.price;
         this.saveCart();
       }

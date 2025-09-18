@@ -14,7 +14,7 @@ export class ProductService {
   private apiUrl: string = environment.apiUrl;
   private http = inject(HttpClient);
 
-  constructor(private http: HttpClient) {}
+  constructor() {}
 
   getProducts(): Observable<Product[]> {
     return this.http.get<Response>(this.apiUrl + 'catalog').pipe(
@@ -23,9 +23,10 @@ export class ProductService {
           return response.items.map(item => ({
             GUID: item.GUID,
             name: item.name,
-            category: item.categoryName,
+            categoryName: item.categoryName,
+            categoryGUID: item.categoryGUID,
             price: Number(item.price),
-            file: item.file ? item.file : null
+            file: item.file ?? undefined
           }));
         }
         throw new Error('API returned error status');
@@ -49,11 +50,9 @@ export class ProductService {
 
           let imgUrls: string[] | undefined = [];
           const productPhotos = response.photos;
-          for (let photo of productPhotos) {
-            if (productPhotos.hasOwnProperty(photo)) {
-              const firstPhotoKey = Object.keys(productPhotos)[0];
-              imgUrls.push(`${environment.photosUrl}${productPhotos[firstPhotoKey]}`);
-            }
+
+          for (const key of Object.keys(productPhotos)) {
+            imgUrls.push(`${environment.photosUrl}${productPhotos[key]}`);
           }
 
           return {

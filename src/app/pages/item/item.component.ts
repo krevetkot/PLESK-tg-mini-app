@@ -1,10 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { CartService } from '../../services/cart.service';
-import {Product} from '../../models/product';
-import {ProductService} from '../../services/product.service';
-import {ActivatedRoute} from '@angular/router';
+import { Product } from '../../models/product';
+import { ProductService } from '../../services/product.service';
+import { ActivatedRoute } from '@angular/router';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-item',
@@ -13,96 +14,129 @@ import {ActivatedRoute} from '@angular/router';
   templateUrl: './item.component.html',
   styleUrl: './item.component.css'
 })
-export class ItemComponent implements OnInit {
-  public product: Product;
-  // Массив изображений для карусели
-  productImages: string[];
-
+export class ItemComponent implements OnInit, OnDestroy {
+  public product: Product | null = null; // Инициализируем null
+  productImages: string[] = []; // Инициализируем пустым массивом
   currentImageIndex: number = 0;
-  currentImage: string = this.productImages[0];
+  currentImage: string = '';
 
   addedQuantity: number = 0;
   buttonType: 'add' | 'quantity' = 'add';
+  loading: boolean = true;
 
-  constructor(private cartService: CartService,
-              private productService: ProductService,
-              private route: ActivatedRoute,) {}
+  private cartSubscription: Subscription | undefined;
+
+  constructor(
+    private cartService: CartService,
+    private productService: ProductService,
+    private route: ActivatedRoute
+  ) {}
 
   ngOnInit(): void {
     const guid = this.route.snapshot.paramMap.get('guid');
     if (guid) {
       this.loadProduct(guid);
     }
+  }
 
+  loadProduct(guid: string): void {
+    this.loading = true;
 
+    this.productService.getProduct(guid).subscribe({
+      next: (product) => {
+        this.product = product;
+        this.loading = false;
 
-    // Проверяем, есть ли товар в корзине
-    this.addedQuantity = this.cartService.getItemQuantity(this.product.GUID);
+        // Инициализируем карусель после загрузки продукта
+        this.initializeCarousel();
 
-    if (this.addedQuantity > 0) {
-      this.buttonType = 'quantity';
-    }
-
-    // Подписываемся на изменения корзины
-    this.cartService.cart$.subscribe(items => {
-      const item = items.find(item => item.product.GUID === this.product.GUID);
-      this.addedQuantity = item ? item.quantity : 0;
-
-      if (this.addedQuantity === 0) {
-        this.buttonType = 'add';
+        // Проверяем корзину только после загрузки продукта
+        this.checkCartState();
+      },
+      error: (error) => {
+        console.error('Ошибка загрузки:', error.message);
+        this.loading = false;
       }
     });
   }
 
-  loadProduct(guid: string): void {
-    this.productService.getProduct(guid)
+  private initializeCarousel(): void {
+    if (this.product && this.product.imageUrl) {
+      this.productImages = this.product.imageUrl;
+      this.currentImage = this.productImages[0] || '';
+    }
+  }
+
+  private checkCartState(): void {
+    if (this.product) {
+      this.addedQuantity = this.cartService.getItemQuantity(this.product.GUID);
+      this.buttonType = this.addedQuantity > 0 ? 'quantity' : 'add';
+    }
+
+    // Подписываемся на изменения корзины
+    this.cartSubscription = this.cartService.cart$.subscribe(items => {
+      if (this.product) {
+        const item = items.find(item => item.product.GUID === this.product!.GUID);
+        this.addedQuantity = item ? item.quantity : 0;
+        this.buttonType = this.addedQuantity > 0 ? 'quantity' : 'add';
+      }
+    });
   }
 
   // Методы для карусели
   nextImage(): void {
-    this.currentImageIndex = (this.currentImageIndex + 1) % this.productImages.length;
-    this.currentImage = this.productImages[this.currentImageIndex];
+    if (this.productImages.length > 1) {
+      this.currentImageIndex = (this.currentImageIndex + 1) % this.productImages.length;
+      this.currentImage = this.productImages[this.currentImageIndex];
+    }
   }
+
   prevImage(): void {
-    this.currentImageIndex = (this.currentImageIndex - 1 + this.productImages.length) % this.productImages.length;
-    this.currentImage = this.productImages[this.currentImageIndex];
+    if (this.productImages.length > 1) {
+      this.currentImageIndex = (this.currentImageIndex - 1 + this.productImages.length) % this.productImages.length;
+      this.currentImage = this.productImages[this.currentImageIndex];
+    }
   }
+
   goToImage(index: number): void {
-    this.currentImageIndex = index;
-    this.currentImage = this.productImages[index];
+    if (index >= 0 && index < this.productImages.length) {
+      this.currentImageIndex = index;
+      this.currentImage = this.productImages[index];
+    }
   }
 
   // Добавить товар в корзину
   addToCart(quantity: number): void {
-    this.cartService.addToCart(this.product, quantity);
-
-    // Обновляем локальное состояние
-    this.addedQuantity = this.cartService.getItemQuantity(this.product.GUID);
-
-    // Меняем соответствующую кнопку
-    if (quantity === 1) {
+    if (this.product) {
+      this.cartService.addToCart(this.product, quantity);
+      this.addedQuantity = this.cartService.getItemQuantity(this.product.GUID);
       this.buttonType = 'quantity';
     }
-
-    console.log('Добавлено в корзину:', quantity, 'шт. Текущее количество:', this.addedQuantity);
   }
 
   // Увеличить количество
   increaseQuantity(): void {
-    this.cartService.updateQuantity(this.product.GUID, this.addedQuantity + 1);
-    this.addedQuantity = this.cartService.getItemQuantity(this.product.GUID);
+    if (this.product) {
+      this.cartService.updateQuantity(this.product.GUID, this.addedQuantity + 1);
+    }
   }
 
   // Уменьшить количество
   decreaseQuantity(): void {
-    if (this.addedQuantity > 1) {
-      this.cartService.updateQuantity(this.product.GUID, this.addedQuantity - 1);
-      this.addedQuantity = this.cartService.getItemQuantity(this.product.GUID);
-    } else if (this.addedQuantity === 1) {
-      this.cartService.removeFromCart(this.product.GUID);
-      this.addedQuantity = 0;
-      this.buttonType = 'add';
+    if (this.product) {
+      if (this.addedQuantity > 1) {
+        this.cartService.updateQuantity(this.product.GUID, this.addedQuantity - 1);
+      } else if (this.addedQuantity === 1) {
+        this.cartService.removeFromCart(this.product.GUID);
+        this.buttonType = 'add';
+      }
     }
   }
 
+  ngOnDestroy(): void {
+    // Отписываемся от подписки при уничтожении компонента
+    if (this.cartSubscription) {
+      this.cartSubscription.unsubscribe();
+    }
+  }
 }

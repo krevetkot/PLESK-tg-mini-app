@@ -5,6 +5,6 @@ export interface Product {
   categoryGUID: string;
   price: number;
   description?: string;
-  imageUrl?: string[];
-  file?: string;
+  imageUrl?: string[]; // фото товаров в карусели на странице товара
+  file?: string; // главное фото, отображается на галвной странице
 }

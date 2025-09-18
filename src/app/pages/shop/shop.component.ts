@@ -1,9 +1,10 @@
-import {Component, HostListener} from '@angular/core';
+import {Component, HostListener, OnInit} from '@angular/core';
 import {Product} from '../../models/product';
 import {ProductService} from '../../services/product.service';
 import {CommonModule} from '@angular/common';
 import {FormsModule} from '@angular/forms';
 import { Router } from '@angular/router';
+import {TelegramService} from '../../services/telegram.service';
 
 @Component({
   selector: 'app-shop',
@@ -12,7 +13,7 @@ import { Router } from '@angular/router';
   templateUrl: './shop.component.html',
   styleUrl: './shop.component.css'
 })
-export class ShopComponent {
+export class ShopComponent implements OnInit{
   products: Product[] = [];
   filteredProducts: Product[] = [];
   loading = true;
@@ -23,9 +24,33 @@ export class ShopComponent {
   selectedCategory: string = 'Все';
   selectedSort: string = 'name';
 
-  constructor(private productService: ProductService, private router: Router) {}
+  constructor(private productService: ProductService,
+              private router: Router,
+              private telegramService: TelegramService) {}
 
   ngOnInit(): void {
+    console.log("ShopComponent ngOnInit вызван");
+
+    // window.Telegram.WebApp.ready();
+    //
+    // // Получаем данные пользователя
+    // const initData = window.Telegram.WebApp.initData;
+    // const initDataUnsafe = window.Telegram.WebApp.initDataUnsafe;
+    //
+    // console.log(initData);
+    // Ждем, пока initDataReady в index.html завершится
+    // (window as any).initDataReady
+    //   .then((data: string) => {
+    //     console.log('initData отправлено, ответ сервера:', data);
+    //     this.loadProducts();
+    //   })
+    //   // .catch(err => {
+    //   //   console.error('Ошибка при initData:', err);
+    //   //   this.loadProducts();
+    //   // });
+  }
+
+  loadProducts(): void {
     this.productService.getProducts().subscribe({
       next: (products) => {
         this.products = products;

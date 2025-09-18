@@ -4,7 +4,7 @@
     <div class="carousel-slide">
       <img
         [src]="currentImage"
-        [alt]="product.name"
+        alt="Нет фото"
         loading="lazy"
         class="carousel-image"
       >
@@ -27,13 +27,12 @@
   </div>
 
 
-
   <div class="product-info">
-    <h2 class="product-name">{{ product.name }}</h2>
+    <h2 class="product-name">{{ product?.name }}</h2>
     <div class="product-price">
-      {{ product.price | number:'1.2-2' }} ₽
+      {{ product?.price | number:'1.2-2' }} ₽
     </div>
-    <p class="product-description">{{product.description}}</p>
+    <p class="product-description">{{product?.description}}</p>
 
 <!--    <div class="specs-container">-->
 <!--      <h3 class="specs-title">Характеристики</h3>-->

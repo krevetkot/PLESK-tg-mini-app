@@ -1,27 +1,27 @@
-div {
-  width: 100%;
-  box-shadow: 0 0 8px rgba(0, 0, 0, 0.08);
-}
+/*div {*/
+/*  width: 100%;*/
+/*  box-shadow: 0 0 8px rgba(0, 0, 0, 0.08);*/
+/*}*/
 
-.avatar-section {
-  width: 100%;
-  place-items: center;
-  display: grid;
-}
+/*.avatar-section {*/
+/*  width: 100%;*/
+/*  place-items: center;*/
+/*  display: grid;*/
+/*}*/
 
-.info-view {
-  align-items: center;
-}
+/*.info-view {*/
+/*  align-items: center;*/
+/*}*/
 
-table {
-  width: 100%;
-}
+/*table {*/
+/*  width: 100%;*/
+/*}*/
 
-.right-column {
-  width: 50%;
-  text-align: right;
-}
+/*.right-column {*/
+/*  width: 50%;*/
+/*  text-align: right;*/
+/*}*/
 
-.avatar-change-btn {
-  cursor: pointer;
-}
+/*.avatar-change-btn {*/
+/*  cursor: pointer;*/
+/*}*/
