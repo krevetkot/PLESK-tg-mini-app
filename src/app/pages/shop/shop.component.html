@@ -74,16 +74,15 @@
   <!-- Сетка товаров -->
   @if (!loading && filteredProducts.length > 0) {
   <div class="products-grid">
-    @for (product of filteredProducts; track product.id) {
-  <div class="product-card" (click)="navigateToItemPage(product.id)">
+    @for (product of filteredProducts; track product.GUID) {
+  <div class="product-card" (click)="navigateToItemPage(product.GUID)">
     <!-- Изображение товара -->
-    <div class="product-image-container" [class.out-of-stock]="product.stock === 0">
+    <div class="product-image-container">
       <img [src]="product.imageUrl" [alt]="product.name" loading="lazy" class="product-img">
     </div>
 
     <div class="product-info">
       <h3 class="product-name">{{ product.name }}</h3>
-      <p class="product-stock"> {{ getStockText(product.stock) }}</p>
       <div class="product-price">
         {{ product.price | number:'1.2-2' }} ₽
       </div>

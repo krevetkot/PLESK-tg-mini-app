@@ -17,7 +17,7 @@
     <h1 class="cart-title">Корзина</h1>
 
     <div class="cart-items">
-      @for (item of orderItems; track item.product.id) {
+      @for (item of orderItems; track item.product.GUID) {
   <div class="cart-item">
     <div class="item-image">
       <img [src]="item.product.imageUrl" [alt]="item.product.name" loading="lazy">
@@ -57,7 +57,7 @@
       <span class="total-price">{{ (item.product.price * item.quantity) | number:'1.2-2' }} ₽</span>
     </div>
 
-    <button class="remove-btn" (click)="removeItem(item.product.id)">
+    <button class="remove-btn" (click)="removeItem(item.product.GUID)">
       ×
     </button>
   </div>
@@ -76,6 +76,18 @@
         [max]="getShippingMaxDate()"
         class="date-input"
       >
+    </div>
+
+      <!-- Комментарий к заказу -->
+    <div class="order-comment">
+      <label for="orderComment">Комментарий к заказу:</label>
+      <textarea
+        id="orderComment"
+        [(ngModel)]="orderComment"
+        placeholder="Ваши пожелания или особые указания..."
+        class="comment-textarea"
+        rows="4"
+      ></textarea>
     </div>
 
     <div class="order-summary">

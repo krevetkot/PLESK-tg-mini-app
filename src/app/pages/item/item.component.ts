@@ -3,6 +3,8 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { CartService } from '../../services/cart.service';
 import {Product} from '../../models/product';
+import {ProductService} from '../../services/product.service';
+import {ActivatedRoute} from '@angular/router';
 
 @Component({
   selector: 'app-item',
@@ -12,38 +14,74 @@ import {Product} from '../../models/product';
   styleUrl: './item.component.css'
 })
 export class ItemComponent implements OnInit {
-  public product: Product = {
-    id: 'sku-6',
-    name: 'Apple Watch Series 9',
-    price: 399.99,
-    category: 'Электроника',
-    stock: 30,
-    number_in_box: 6,
-    imageUrl: '1.bmp',
-    description: 'Умные часы с продвинутыми функциями',
-    origin_country: 'США'
-  };
+  public product: Product;
+  // Массив изображений для карусели
+  productImages: string[];
+
+  currentImageIndex: number = 0;
+  currentImage: string = this.productImages[0];
 
   addedQuantity: number = 0;
-  leftButtonType: 'add' | 'quantity' = 'add';
-  rightButtonType: 'add' | 'quantity' = 'add';
+  buttonType: 'add' | 'quantity' = 'add';
 
-  constructor(private cartService: CartService) {}
+  constructor(private cartService: CartService,
+              private productService: ProductService,
+              private route: ActivatedRoute,) {}
+
+  ngOnInit(): void {
+    const guid = this.route.snapshot.paramMap.get('guid');
+    if (guid) {
+      this.loadProduct(guid);
+    }
+
+
+
+    // Проверяем, есть ли товар в корзине
+    this.addedQuantity = this.cartService.getItemQuantity(this.product.GUID);
+
+    if (this.addedQuantity > 0) {
+      this.buttonType = 'quantity';
+    }
+
+    // Подписываемся на изменения корзины
+    this.cartService.cart$.subscribe(items => {
+      const item = items.find(item => item.product.GUID === this.product.GUID);
+      this.addedQuantity = item ? item.quantity : 0;
+
+      if (this.addedQuantity === 0) {
+        this.buttonType = 'add';
+      }
+    });
+  }
+
+  loadProduct(guid: string): void {
+    this.productService.getProduct(guid)
+  }
+
+  // Методы для карусели
+  nextImage(): void {
+    this.currentImageIndex = (this.currentImageIndex + 1) % this.productImages.length;
+    this.currentImage = this.productImages[this.currentImageIndex];
+  }
+  prevImage(): void {
+    this.currentImageIndex = (this.currentImageIndex - 1 + this.productImages.length) % this.productImages.length;
+    this.currentImage = this.productImages[this.currentImageIndex];
+  }
+  goToImage(index: number): void {
+    this.currentImageIndex = index;
+    this.currentImage = this.productImages[index];
+  }
 
   // Добавить товар в корзину
   addToCart(quantity: number): void {
-    if (this.product.stock === 0) return;
-
     this.cartService.addToCart(this.product, quantity);
 
     // Обновляем локальное состояние
-    this.addedQuantity = this.cartService.getItemQuantity(this.product.id);
+    this.addedQuantity = this.cartService.getItemQuantity(this.product.GUID);
 
     // Меняем соответствующую кнопку
     if (quantity === 1) {
-      this.leftButtonType = 'quantity';
-    } else if (quantity === this.product.number_in_box) {
-      this.rightButtonType = 'quantity';
+      this.buttonType = 'quantity';
     }
 
     console.log('Добавлено в корзину:', quantity, 'шт. Текущее количество:', this.addedQuantity);
@@ -51,44 +89,20 @@ export class ItemComponent implements OnInit {
 
   // Увеличить количество
   increaseQuantity(): void {
-    if (this.addedQuantity < this.product.stock) {
-      this.cartService.updateQuantity(this.product.id, this.addedQuantity + 1);
-      this.addedQuantity = this.cartService.getItemQuantity(this.product.id);
-    }
+    this.cartService.updateQuantity(this.product.GUID, this.addedQuantity + 1);
+    this.addedQuantity = this.cartService.getItemQuantity(this.product.GUID);
   }
 
   // Уменьшить количество
   decreaseQuantity(): void {
     if (this.addedQuantity > 1) {
-      this.cartService.updateQuantity(this.product.id, this.addedQuantity - 1);
-      this.addedQuantity = this.cartService.getItemQuantity(this.product.id);
+      this.cartService.updateQuantity(this.product.GUID, this.addedQuantity - 1);
+      this.addedQuantity = this.cartService.getItemQuantity(this.product.GUID);
     } else if (this.addedQuantity === 1) {
-      this.cartService.removeFromCart(this.product.id);
+      this.cartService.removeFromCart(this.product.GUID);
       this.addedQuantity = 0;
-      this.leftButtonType = 'add';
-      this.rightButtonType = 'add';
+      this.buttonType = 'add';
     }
   }
 
-  // При загрузке компонента
-  ngOnInit(): void {
-    // Проверяем, есть ли товар в корзине
-    this.addedQuantity = this.cartService.getItemQuantity(this.product.id);
-
-    if (this.addedQuantity > 0) {
-      this.leftButtonType = 'quantity';
-      this.rightButtonType = 'quantity';
-    }
-
-    // Подписываемся на изменения корзины
-    this.cartService.cart$.subscribe(items => {
-      const item = items.find(item => item.product.id === this.product.id);
-      this.addedQuantity = item ? item.quantity : 0;
-
-      if (this.addedQuantity === 0) {
-        this.leftButtonType = 'add';
-        this.rightButtonType = 'add';
-      }
-    });
-  }
 }

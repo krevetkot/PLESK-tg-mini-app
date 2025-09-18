@@ -58,7 +58,7 @@ export class ShopComponent {
       this.filteredProducts = this.products;
     } else {
       this.filteredProducts = this.products.filter(product =>
-        product.category === category
+        product.categoryName === category
       );
     }
 
@@ -80,18 +80,6 @@ export class ShopComponent {
     }
   }
 
-  getStockClass(stock: number): string {
-    if (stock === 0) return 'out-of-stock';
-    if (stock < 10) return 'low-stock';
-    return 'in-stock';
-  }
-
-  getStockText(stock: number): string {
-    if (stock === 0) return 'Нет в наличии';
-    if (stock < 10) return `Осталось мало: ${stock} шт.`;
-    return `В наличии: ${stock} шт.`;
-  }
-
   searchProducts(): void {
     if (!this.searchTerm.trim()) {
       this.filteredProducts = this.products;
@@ -102,7 +90,7 @@ export class ShopComponent {
     const term = this.searchTerm.toLowerCase().trim();
     this.filteredProducts = this.products.filter(product =>
       product.name.toLowerCase().includes(term) ||
-      product.category.toLowerCase().includes(term)
+      product.categoryName.toLowerCase().includes(term)
     );
 
     this.sortProducts(); // Применяем сортировку к результатам поиска
@@ -116,10 +104,10 @@ export class ShopComponent {
 
   @HostListener('window:scroll', [])
   onWindowScroll() {
-    this.isSticky = window.scrollY > 50;
+    this.isSticky = window.scrollY > 50; // вот тут дергается
   }
 
   navigateToItemPage(id: string): void {
-    this.router.navigate(['/item', id]);
+    this.router.navigate(['/item', id]).then(r => console.log("Can't go the the item card"));
   }
 }

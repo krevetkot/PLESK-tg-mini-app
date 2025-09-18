@@ -16,32 +16,7 @@ export class ProfileService {
     avatar: '1.bmp'
   };
 
-  private orders: Order[] = [
-    {
-      id: 1,
-      orderNumber: 1,
-      date: new Date('2024-01-15'),
-      status: 'delivered',
-      total: 14999.97,
-      items: [
-        {
-          quantity: 1,
-          product:     {
-            id: 'sku-1',
-            name: 'iPhone 15 Pro',
-            category: 'Электроника',
-            price: 999.99,
-            stock: 0,
-            number_in_box: 1,
-            imageUrl: '1.bmp',
-            description: 'Флагманский смартфон от Apple',
-            origin_country: 'Russian'
-          },
-          total: 129.99
-        }
-      ]
-    }
-  ];
+  private orders: Order[] = [];
 
   getProfile(): Observable<Profile> {
     return of(this.profile);

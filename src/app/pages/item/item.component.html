@@ -1,7 +1,32 @@
 <div class="item-container">
-  <div class="item-image-container" [class.out-of-stock]="product.stock === 0">
-    <img [src]="product.imageUrl" [alt]="product.name" loading="lazy" class="item-img">
+  <!-- Карусель изображений -->
+  <div class="carousel-container">
+    <div class="carousel-slide">
+      <img
+        [src]="currentImage"
+        [alt]="product.name"
+        loading="lazy"
+        class="carousel-image"
+      >
+    </div>
+
+    @if (productImages.length > 1) {
+    <button class="carousel-btn prev" (click)="prevImage()">‹</button>
+    <button class="carousel-btn next" (click)="nextImage()">›</button>
+
+    <div class="carousel-indicators">
+      @for (img of productImages; track $index; let i = $index) {
+    <button
+      class="indicator"
+      [class.active]="currentImageIndex === i"
+      (click)="goToImage(i)"
+    ></button>
+    }
+    </div>
+    }
   </div>
+
+
 
   <div class="product-info">
     <h2 class="product-name">{{ product.name }}</h2>
@@ -10,35 +35,34 @@
     </div>
     <p class="product-description">{{product.description}}</p>
 
-    <div class="specs-container">
-      <h3 class="specs-title">Характеристики</h3>
-      <table class="item-info-table">
-        <tbody>
-        <tr>
-          <td class="left-column">Страна производитель:</td>
-          <td class="right-column">{{product.origin_country}}</td>
-        </tr>
-        <tr>
-          <td class="left-column">В наличии:</td>
-          <td class="right-column">{{product.stock}} шт.</td>
-        </tr>
-        <tr>
-          <td class="left-column">Количество в коробке:</td>
-          <td class="right-column">{{product.number_in_box}} шт.</td>
-        </tr>
-        <tr>
-          <td class="left-column">Артикул:</td>
-          <td class="right-column">{{product.id}}</td>
-        </tr>
-        </tbody>
-      </table>
-    </div>
+<!--    <div class="specs-container">-->
+<!--      <h3 class="specs-title">Характеристики</h3>-->
+<!--      <table class="item-info-table">-->
+<!--        <tbody>-->
+<!--        <tr>-->
+<!--          <td class="left-column">Страна производитель:</td>-->
+<!--          <td class="right-column">{{product.origin_country}}</td>-->
+<!--        </tr>-->
+<!--        <tr>-->
+<!--          <td class="left-column">В наличии:</td>-->
+<!--          <td class="right-column">{{product.stock}} шт.</td>-->
+<!--        </tr>-->
+<!--        <tr>-->
+<!--          <td class="left-column">Количество в коробке:</td>-->
+<!--          <td class="right-column">{{product.number_in_box}} шт.</td>-->
+<!--        </tr>-->
+<!--        <tr>-->
+<!--          <td class="left-column">Артикул:</td>-->
+<!--          <td class="right-column">{{product.GUID}}</td>-->
+<!--        </tr>-->
+<!--        </tbody>-->
+<!--      </table>-->
+<!--    </div>-->
 
     <div class="add-btns-container">
-      <!-- Левая кнопка (1 шт) -->
       @if (addedQuantity === 0) {
-      <button class="add-to-cart-1-item-btn" (click)="addToCart(1)" [disabled]="product.stock === 0">
-      {{ product.stock === 0 ? 'Нет в наличии' : 'Добавить 1 шт.' }}
+      <button class="add-to-cart-1-item-btn" (click)="addToCart(1)">
+      Добавить 1 шт.
       </button>
       } @else {
       <div class="quantity-controls">
@@ -46,17 +70,15 @@
           −
         </button>
         <span class="quantity-display">{{ addedQuantity }} шт.</span>
-          <button class="quantity-btn plus" (click)="increaseQuantity()"
-                  [disabled]="addedQuantity >= product.stock">
+          <button class="quantity-btn plus" (click)="increaseQuantity()">
             +
           </button>
         </div>
       }
 
-      <!-- Правая кнопка (1 кор) -->
-      <button class="add-to-cart-1-box-btn" (click)="addToCart(product.number_in_box)" [disabled]="product.stock === 0">
-      {{ product.stock === 0 ? 'Нет в наличии' : 'Добавить 1 кор.' }}
-      </button>
+<!--      <button class="add-to-cart-1-box-btn" (click)="addToCart(product.number_in_box)" [disabled]="product.stock === 0">-->
+<!--      {{ product.stock === 0 ? 'Нет в наличии' : 'Добавить 1 кор.' }}-->
+<!--      </button>-->
     </div>
   </div>
 </div>

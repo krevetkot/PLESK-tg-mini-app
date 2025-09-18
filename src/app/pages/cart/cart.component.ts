@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { CartService } from '../../services/cart.service';
 import { OrderItem } from '../../models/order-item';
+import {Order} from '../../models/order';
 
 @Component({
   selector: 'app-cart',
@@ -17,6 +18,7 @@ export class CartComponent implements OnInit {
   totalAmount: number = 0;
   shippingDate: string = '';
   isEmpty: boolean = true;
+  orderComment: string = '';
 
   constructor(
     private cartService: CartService,
@@ -42,11 +44,11 @@ export class CartComponent implements OnInit {
   }
 
   increaseQuantity(item: OrderItem): void {
-    this.cartService.updateQuantity(item.product.id, item.quantity + 1);
+    this.cartService.updateQuantity(item.product.GUID, item.quantity + 1);
   }
 
   decreaseQuantity(item: OrderItem): void {
-    this.cartService.updateQuantity(item.product.id, item.quantity - 1);
+    this.cartService.updateQuantity(item.product.GUID, item.quantity - 1);
   }
 
   updateQuantity(item: OrderItem, event: Event): void {
@@ -54,7 +56,7 @@ export class CartComponent implements OnInit {
     const quantity = parseInt(input.value, 10);
 
     if (!isNaN(quantity) && quantity >= 0) {
-      this.cartService.updateQuantity(item.product.id, quantity);
+      this.cartService.updateQuantity(item.product.GUID, quantity);
     }
   }
 
@@ -73,7 +75,10 @@ export class CartComponent implements OnInit {
   checkout(): void {
     if (this.orderItems.length == 0) {
       alert('Корзина пуста.');
-    } else if (!this.isShippingDateValid()) {
+      return;
+    }
+
+    if (!this.isShippingDateValid()) {
       alert('Пожалуйста, укажите дату отгрузки.');
     } else {
         console.log('Оформление заказа:', {

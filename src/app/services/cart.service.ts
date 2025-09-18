@@ -19,7 +19,7 @@ export class CartService {
 
   // Добавить товар в корзину
   addToCart(product: Product, quantity: number): void {
-    const existingItem = this.orderItems.find(item => item.product.id === product.id);
+    const existingItem = this.orderItems.find(item => item.product.GUID === product.GUID);
 
     if (existingItem) {
       // Увеличиваем количество, но не больше максимума
@@ -42,7 +42,7 @@ export class CartService {
 
   // Обновить количество товара
   updateQuantity(productId: string, quantity: number): void {
-    const item = this.orderItems.find(item => item.product.id === productId);
+    const item = this.orderItems.find(item => item.product.GUID === productId);
     if (item) {
       if (quantity <= 0) {
         this.removeFromCart(productId);
@@ -56,7 +56,7 @@ export class CartService {
 
   // Удалить товар из корзины
   removeFromCart(productId: string): void {
-    this.orderItems = this.orderItems.filter(item => item.product.id !== productId);
+    this.orderItems = this.orderItems.filter(item => item.product.GUID !== productId);
     this.saveCart();
   }
 
@@ -83,18 +83,18 @@ export class CartService {
 
   // Проверить, есть ли товар в корзине
   hasItem(productId: string): boolean {
-    return this.orderItems.some(item => item.product.id === productId);
+    return this.orderItems.some(item => item.product.GUID === productId);
   }
 
   // Получить количество конкретного товара
   getItemQuantity(productId: string): number {
-    const item = this.orderItems.find(item => item.product.id === productId);
+    const item = this.orderItems.find(item => item.product.GUID === productId);
     return item ? item.quantity : 0;
   }
 
   // Получить OrderItem по productId
   getOrderItem(productId: string): OrderItem | undefined {
-    return this.orderItems.find(item => item.product.id === productId);
+    return this.orderItems.find(item => item.product.GUID === productId);
   }
 
   // Сохранить корзину в localStorage
