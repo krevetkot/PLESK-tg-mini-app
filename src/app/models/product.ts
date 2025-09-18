@@ -5,6 +5,6 @@ export interface Product {
   categoryGUID: string;
   price: number;
   description?: string;
-  imageUrl?: string;
+  imageUrl?: string[];
   file?: string;
 }
