@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import {OrderItem} from '../models/order-item';
+import {Product} from '../models/product';
+
 
 @Injectable({
   providedIn: 'root'
@@ -12,61 +14,112 @@ export class CartService {
   cart$ = this.cartSubject.asObservable();
 
   constructor() {
-    // this.loadCartFromStorage();
+    this.loadCartFromStorage();
   }
 
-  addToCart(item: OrderItem): void {
-    const existingItem = this.orderItems.find(i => i.product.id === item.product.id);
+  // Добавить товар в корзину
+  addToCart(product: Product, quantity: number): void {
+    const existingItem = this.orderItems.find(item => item.product.id === product.id);
 
     if (existingItem) {
-      existingItem.quantity += item.quantity;
+      // Увеличиваем количество, но не больше максимума
+      const newQuantity = existingItem.quantity + quantity;
+      existingItem.quantity = Math.min(newQuantity, product.stock);
+      existingItem.total = existingItem.quantity * existingItem.product.price;
     } else {
-      this.orderItems.push({ ...item });
+      // Добавляем новый товар
+      const newItem: OrderItem = {
+        quantity: Math.min(quantity, product.stock),
+        product: product,
+        total: Math.min(quantity, product.stock) * product.price
+      };
+      this.orderItems.push(newItem);
     }
 
     this.saveCart();
+    console.log('Товар добавлен в корзину:', product.name, 'Количество:', quantity);
   }
 
+  // Обновить количество товара
   updateQuantity(productId: string, quantity: number): void {
-    const item = this.orderItems.find(i => i.product.id === productId);
+    const item = this.orderItems.find(item => item.product.id === productId);
     if (item) {
       if (quantity <= 0) {
         this.removeFromCart(productId);
       } else {
-        item.quantity = quantity;
+        item.quantity = Math.min(quantity, item.product.stock);
+        item.total = item.quantity * item.product.price;
         this.saveCart();
       }
     }
   }
 
+  // Удалить товар из корзины
   removeFromCart(productId: string): void {
     this.orderItems = this.orderItems.filter(item => item.product.id !== productId);
     this.saveCart();
   }
 
+  // Очистить корзину
   clearCart(): void {
     this.orderItems = [];
     this.saveCart();
   }
 
+  // Получить общую сумму
   getTotalAmount(): number {
-    return this.orderItems.reduce((total, item) => total + (item.product.price * item.quantity), 0);
+    return this.orderItems.reduce((total, item) => total + item.total, 0);
   }
 
+  // Получить общее количество товаров
   getTotalItems(): number {
     return this.orderItems.reduce((total, item) => total + item.quantity, 0);
   }
 
-  private saveCart(): void {
-    localStorage.setItem('cart', JSON.stringify(this.orderItems));
-    this.cartSubject.next([...this.orderItems]);
+  // Получить все товары в корзине
+  getCartItems(): OrderItem[] {
+    return [...this.orderItems];
   }
 
-  // private loadCartFromStorage(): void {
-  //   const savedCart = localStorage.getItem('cart');
-  //   if (savedCart) {
-  //     this.orderItems = JSON.parse(savedCart);
-  //     this.cartSubject.next([...this.orderItems]);
-  //   }
-  // }
+  // Проверить, есть ли товар в корзине
+  hasItem(productId: string): boolean {
+    return this.orderItems.some(item => item.product.id === productId);
+  }
+
+  // Получить количество конкретного товара
+  getItemQuantity(productId: string): number {
+    const item = this.orderItems.find(item => item.product.id === productId);
+    return item ? item.quantity : 0;
+  }
+
+  // Получить OrderItem по productId
+  getOrderItem(productId: string): OrderItem | undefined {
+    return this.orderItems.find(item => item.product.id === productId);
+  }
+
+  // Сохранить корзину в localStorage
+  private saveCart(): void {
+    try {
+      localStorage.setItem('cart', JSON.stringify(this.orderItems));
+      this.cartSubject.next([...this.orderItems]);
+      console.log('Корзина сохранена:', this.orderItems);
+    } catch (error) {
+      console.error('Ошибка сохранения корзины:', error);
+    }
+  }
+
+  // Загрузить корзину из localStorage
+  private loadCartFromStorage(): void {
+    try {
+      const savedCart = localStorage.getItem('cart');
+      if (savedCart) {
+        this.orderItems = JSON.parse(savedCart);
+        this.cartSubject.next([...this.orderItems]);
+        console.log('Корзина загружена:', this.orderItems);
+      }
+    } catch (error) {
+      console.error('Ошибка загрузки корзины:', error);
+      this.orderItems = [];
+    }
+  }
 }

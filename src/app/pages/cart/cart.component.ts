@@ -2,8 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
-import {CartService} from '../../services/cart.service';
-import {OrderItem} from '../../models/order-item';
+import { CartService } from '../../services/cart.service';
+import { OrderItem } from '../../models/order-item';
 
 @Component({
   selector: 'app-cart',
@@ -24,11 +24,21 @@ export class CartComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.cartService.cart$.subscribe(items => {
-      this.orderItems = items;
-      this.isEmpty = items.length === 0;
-      this.totalAmount = this.cartService.getTotalAmount();
+    this.loadCart();
+
+    // Подписываемся на изменения корзины
+    this.cartService.cart$.subscribe(() => {
+      this.loadCart();
     });
+  }
+
+  // Загрузить данные корзины
+  private loadCart(): void {
+    this.orderItems = this.cartService.getCartItems();
+    this.totalAmount = this.cartService.getTotalAmount();
+    this.isEmpty = this.orderItems.length === 0;
+
+    console.log('Корзина загружена:', this.orderItems);
   }
 
   increaseQuantity(item: OrderItem): void {
@@ -37,10 +47,6 @@ export class CartComponent implements OnInit {
 
   decreaseQuantity(item: OrderItem): void {
     this.cartService.updateQuantity(item.product.id, item.quantity - 1);
-  }
-
-  removeItem(productId: string): void {
-    this.cartService.removeFromCart(productId);
   }
 
   updateQuantity(item: OrderItem, event: Event): void {
@@ -52,23 +58,33 @@ export class CartComponent implements OnInit {
     }
   }
 
+  removeItem(productId: string): void {
+    this.cartService.removeFromCart(productId);
+  }
+
   continueShopping(): void {
-    this.router.navigate(['']).then(r => console.error("Can't navigate to shopping page"));
+    this.router.navigate(['']).then(r => console.log("Can't open the shop."));
+  }
+
+  isShippingDateValid(): boolean {
+    return !!this.shippingDate && this.shippingDate.trim() !== '';
   }
 
   checkout(): void {
-    if (this.orderItems.length > 0) {
-      // Здесь будет логика оформления заказа
-      console.log('Оформление заказа:', {
-        items: this.orderItems,
-        total: this.totalAmount,
-        shippingDate: this.shippingDate
-      });
+    if (this.orderItems.length == 0) {
+      alert('Корзина пуста.');
+    } else if (!this.isShippingDateValid()) {
+      alert('Пожалуйста, укажите дату отгрузки.');
+    } else {
+        console.log('Оформление заказа:', {
+          items: this.orderItems,
+          total: this.totalAmount,
+          shippingDate: this.shippingDate
+        });
 
-      // Очистка корзины после оформления
-      this.cartService.clearCart();
-      alert('Заказ успешно оформлен!');
-    }
+        this.cartService.clearCart();
+        alert('Заказ успешно оформлен!');
+      }
   }
 
   getShippingMinDate(): string {

@@ -1,9 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import { CartService } from '../../services/cart.service';
 import {Product} from '../../models/product';
-import {CommonModule} from '@angular/common';
-import {FormsModule} from '@angular/forms';
-import {OrderItem} from '../../models/order-item';
-import {CartService} from '../../services/cart.service';
 
 @Component({
   selector: 'app-item',
@@ -12,65 +11,84 @@ import {CartService} from '../../services/cart.service';
   templateUrl: './item.component.html',
   styleUrl: './item.component.css'
 })
-export class ItemComponent {
+export class ItemComponent implements OnInit {
   public product: Product = {
     id: 'sku-6',
     name: 'Apple Watch Series 9',
     price: 399.99,
     category: 'Электроника',
     stock: 30,
-    number_in_box: 5,
+    number_in_box: 6,
     imageUrl: '1.bmp',
     description: 'Умные часы с продвинутыми функциями',
-    origin_country: 'Russian'
+    origin_country: 'США'
   };
+
   addedQuantity: number = 0;
+  leftButtonType: 'add' | 'quantity' = 'add';
+  rightButtonType: 'add' | 'quantity' = 'add';
 
   constructor(private cartService: CartService) {}
 
+  // Добавить товар в корзину
   addToCart(quantity: number): void {
     if (this.product.stock === 0) return;
 
-    const newQuantity = Math.min(quantity, this.product.stock);
-    this.addedQuantity = newQuantity;
+    this.cartService.addToCart(this.product, quantity);
 
-    // Добавляем в корзину
-    const orderItem: OrderItem = {
-      product: this.product,
-      quantity: newQuantity,
-      total: 1
-    };
+    // Обновляем локальное состояние
+    this.addedQuantity = this.cartService.getItemQuantity(this.product.id);
 
-    this.cartService.addToCart(orderItem);
+    // Меняем соответствующую кнопку
+    if (quantity === 1) {
+      this.leftButtonType = 'quantity';
+    } else if (quantity === this.product.number_in_box) {
+      this.rightButtonType = 'quantity';
+    }
+
+    console.log('Добавлено в корзину:', quantity, 'шт. Текущее количество:', this.addedQuantity);
   }
 
+  // Увеличить количество
   increaseQuantity(): void {
     if (this.addedQuantity < this.product.stock) {
-      this.addedQuantity++;
-      this.updateCartQuantity();
+      this.cartService.updateQuantity(this.product.id, this.addedQuantity + 1);
+      this.addedQuantity = this.cartService.getItemQuantity(this.product.id);
     }
   }
 
+  // Уменьшить количество
   decreaseQuantity(): void {
     if (this.addedQuantity > 1) {
-      this.addedQuantity--;
-      this.updateCartQuantity();
+      this.cartService.updateQuantity(this.product.id, this.addedQuantity - 1);
+      this.addedQuantity = this.cartService.getItemQuantity(this.product.id);
     } else if (this.addedQuantity === 1) {
-      // Если уменьшаем до 0, убираем из корзины
       this.cartService.removeFromCart(this.product.id);
       this.addedQuantity = 0;
+      this.leftButtonType = 'add';
+      this.rightButtonType = 'add';
     }
   }
 
-  private updateCartQuantity(): void {
-    this.cartService.updateQuantity(this.product.id, this.addedQuantity);
-  }
-
-  // При загрузке компонента проверяем, есть ли товар уже в корзине
+  // При загрузке компонента
   ngOnInit(): void {
+    // Проверяем, есть ли товар в корзине
+    this.addedQuantity = this.cartService.getItemQuantity(this.product.id);
+
+    if (this.addedQuantity > 0) {
+      this.leftButtonType = 'quantity';
+      this.rightButtonType = 'quantity';
+    }
+
+    // Подписываемся на изменения корзины
     this.cartService.cart$.subscribe(items => {
-      const existingItem = items.find(item => item.product.id === this.product.id);
-      this.addedQuantity = existingItem ? existingItem.quantity : 0;
+      const item = items.find(item => item.product.id === this.product.id);
+      this.addedQuantity = item ? item.quantity : 0;
+
+      if (this.addedQuantity === 0) {
+        this.leftButtonType = 'add';
+        this.rightButtonType = 'add';
+      }
     });
   }
 }
