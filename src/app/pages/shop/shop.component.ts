@@ -1,4 +1,4 @@
-import {Component, HostListener, OnInit} from '@angular/core';
+import {Component, HostListener, inject, OnInit} from '@angular/core';
 import {Product} from '../../models/product';
 import {ProductService} from '../../services/product.service';
 import {CommonModule} from '@angular/common';
@@ -29,25 +29,11 @@ export class ShopComponent implements OnInit{
               private telegramService: TelegramService) {}
 
   ngOnInit(): void {
+
+
     console.log("ShopComponent ngOnInit вызван");
 
-    // window.Telegram.WebApp.ready();
-    //
-    // // Получаем данные пользователя
-    // const initData = window.Telegram.WebApp.initData;
-    // const initDataUnsafe = window.Telegram.WebApp.initDataUnsafe;
-    //
-    // console.log(initData);
-    // Ждем, пока initDataReady в index.html завершится
-    // (window as any).initDataReady
-    //   .then((data: string) => {
-    //     console.log('initData отправлено, ответ сервера:', data);
-    //     this.loadProducts();
-    //   })
-    //   // .catch(err => {
-    //   //   console.error('Ошибка при initData:', err);
-    //   //   this.loadProducts();
-    //   // });
+
   }
 
   loadProducts(): void {
