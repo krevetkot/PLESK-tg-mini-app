@@ -13,6 +13,7 @@ export class ProductService {
   private products: Product[] = [];
   private apiUrl: string = environment.apiUrl;
   private http = inject(HttpClient);
+  private foo: string = 'foo.jpg';
 
   constructor() {}
 
@@ -26,7 +27,7 @@ export class ProductService {
             categoryName: item.categoryName,
             categoryGUID: item.categoryGUID,
             price: Number(item.price),
-            file: item.file ? `${environment.photosUrl}${item.file}` : undefined
+            file: item.file ? `${environment.photosUrl}${item.file}` : this.foo
           }));
         }
         throw new Error('API returned error status');
@@ -39,7 +40,18 @@ export class ProductService {
   }
 
   getCategories(): Observable<string[]>{
-    return of(this.categories);
+    return this.http.get<Response>(this.apiUrl + 'categories').pipe(
+      map(response => {
+        if (response.status === 'success') {
+          return response.items.map(item => item.categoryName);
+        }
+        throw new Error('API returned error status');
+      }),
+      catchError(error => {
+        console.error('Error loading categories:', error);
+        return of([]);
+      })
+    );
   }
 
   getProduct(guid: string): Observable<Product> {
@@ -63,7 +75,7 @@ export class ProductService {
             price: Number(apiProduct.price),
             description: apiProduct.description || undefined,
             imageUrl: imgUrls,
-            file: imgUrls[0] ? imgUrls[0] : undefined
+            file: imgUrls[0] ? imgUrls[0] : this.foo
           };
         }
         throw new Error('Product not found');

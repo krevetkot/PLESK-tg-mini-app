@@ -28,6 +28,7 @@ export class ShopComponent implements OnInit{
 
   ngOnInit(): void {
     this.loadProducts();
+    this.loadCategories();
   }
 
   loadProducts(): void {
@@ -52,6 +53,17 @@ export class ShopComponent implements OnInit{
       error: (error) => {
         console.error('Ошибка загрузки товаров:', error);
         this.loading = false;
+      }
+    });
+  }
+
+  loadCategories(): void {
+    this.productService.getCategories().subscribe({
+      next: (categoryNames) => {
+        this.categories = ['Все'].concat(categoryNames);
+      },
+      error: (error) => {
+        console.error('Ошибка:', error);
       }
     });
   }
