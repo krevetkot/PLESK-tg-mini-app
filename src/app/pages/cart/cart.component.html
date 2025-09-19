@@ -80,11 +80,10 @@
 
       <!-- Комментарий к заказу -->
     <div class="order-comment">
-      <label for="orderComment">Комментарий к заказу:</label>
+      <label for="orderComment">Комментарий к заказу: </label>
       <textarea
         id="orderComment"
         [(ngModel)]="orderComment"
-        placeholder="Ваши пожелания или особые указания..."
         class="comment-textarea"
         rows="4"
       ></textarea>
@@ -93,7 +92,7 @@
     <div class="order-summary">
       <div class="total-line">
         <span>Итого:</span>
-        <span class="total-amount">{{ totalAmount | number:'1.2-2' }} ₽</span>
+        <span class="total-amount"> {{ totalAmount | number:'1.2-2' }} ₽</span>
           </div>
 
           <button class="checkout-btn" (click)="checkout()">

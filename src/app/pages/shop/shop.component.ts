@@ -4,7 +4,6 @@ import {ProductService} from '../../services/product.service';
 import {CommonModule} from '@angular/common';
 import {FormsModule} from '@angular/forms';
 import { Router } from '@angular/router';
-import {TelegramService} from '../../services/telegram.service';
 
 @Component({
   selector: 'app-shop',
@@ -18,22 +17,17 @@ export class ShopComponent implements OnInit{
   filteredProducts: Product[] = [];
   loading = true;
   searchTerm: string = '';
-  isSticky: boolean = false;
+  isSticky: boolean = true;
 
   categories: string[] = [];
   selectedCategory: string = 'Все';
   selectedSort: string = 'name';
 
   constructor(private productService: ProductService,
-              private router: Router,
-              private telegramService: TelegramService) {}
+              private router: Router) {}
 
   ngOnInit(): void {
-
-
-    console.log("ShopComponent ngOnInit вызван");
-
-
+    this.loadProducts();
   }
 
   loadProducts(): void {
@@ -94,7 +88,7 @@ export class ShopComponent implements OnInit{
   searchProducts(): void {
     if (!this.searchTerm.trim()) {
       this.filteredProducts = this.products;
-      this.filterByCategory(this.selectedCategory); // Возвращаем фильтр по категории
+      this.filterByCategory(this.selectedCategory);
       return;
     }
 
@@ -104,21 +98,16 @@ export class ShopComponent implements OnInit{
       product.categoryName.toLowerCase().includes(term)
     );
 
-    this.sortProducts(); // Применяем сортировку к результатам поиска
+    this.sortProducts();
   }
 
   clearSearch(): void {
     this.searchTerm = '';
     this.filteredProducts = this.products;
-    this.filterByCategory(this.selectedCategory); // Возвращаем фильтр по категории
-  }
-
-  @HostListener('window:scroll', [])
-  onWindowScroll() {
-    this.isSticky = window.scrollY > 50; // вот тут дергается
+    this.filterByCategory(this.selectedCategory);
   }
 
   navigateToItemPage(id: string): void {
-    this.router.navigate(['/item', id]).then(r => console.log("Can't go the the item card"));
+    this.router.navigate(['/item', id]).catch(r => console.error(r.message));
   }
 }

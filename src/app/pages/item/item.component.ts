@@ -33,7 +33,7 @@ export class ItemComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
-    const guid = this.route.snapshot.paramMap.get('guid');
+    const guid = this.route.snapshot.paramMap.get('id');
     if (guid) {
       this.loadProduct(guid);
     }
