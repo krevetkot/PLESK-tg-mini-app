@@ -321,6 +321,8 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  touch-action: pan-y; /* Разрешаем вертикальную прокрутку, но блокируем горизонтальную */
+  user-select: none; /* Запрещаем выделение текста при свайпе */
 }
 
 .carousel-slide {
@@ -329,6 +331,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  overflow: hidden;
 }
 
 .carousel-image {
@@ -337,6 +340,8 @@
   object-fit: contain;
   border-radius: 8px;
   transition: opacity 0.3s ease;
+  animation: fadeIn 0.5s ease;
+  pointer-events: none;
 }
 
 /* Кнопки навигации */
@@ -404,10 +409,6 @@
   transform: scale(1.2);
 }
 
-/* Анимация перехода */
-.carousel-image {
-  animation: fadeIn 0.5s ease;
-}
 
 @keyframes fadeIn {
   from { opacity: 0.7; }

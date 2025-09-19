@@ -67,20 +67,34 @@ export class ItemComponent implements OnInit, OnDestroy {
     }
   }
 
-  private checkCartState(): void {
-    if (this.product) {
-      this.addedQuantity = this.cartService.getItemQuantity(this.product.GUID);
-      this.buttonType = this.addedQuantity > 0 ? 'quantity' : 'add';
+  // swipe логика
+  private touchStartX = 0;
+  private touchEndX = 0;
+  private minSwipeDistance = 50; // минимальное расстояние для считывания свайпа
+
+  onTouchStart(event: TouchEvent) {
+    this.touchStartX = event.touches[0].clientX;
+  }
+
+  onTouchMove(event: TouchEvent) {
+    this.touchEndX = event.touches[0].clientX;
+  }
+
+  onTouchEnd(event: TouchEvent) {
+    const distance = this.touchStartX - this.touchEndX;
+
+    // Свайп влево (next)
+    if (distance > this.minSwipeDistance) {
+      this.nextImage();
+    }
+    // Свайп вправо (prev)
+    else if (distance < -this.minSwipeDistance) {
+      this.prevImage();
     }
 
-    // Подписываемся на изменения корзины
-    this.cartSubscription = this.cartService.cart$.subscribe(items => {
-      if (this.product) {
-        const item = items.find(item => item.product.GUID === this.product!.GUID);
-        this.addedQuantity = item ? item.quantity : 0;
-        this.buttonType = this.addedQuantity > 0 ? 'quantity' : 'add';
-      }
-    });
+    // Сброс значений
+    this.touchStartX = 0;
+    this.touchEndX = 0;
   }
 
   // Методы для карусели
@@ -103,6 +117,22 @@ export class ItemComponent implements OnInit, OnDestroy {
       this.currentImageIndex = index;
       this.currentImage = this.productImages[index];
     }
+  }
+
+  private checkCartState(): void {
+    if (this.product) {
+      this.addedQuantity = this.cartService.getItemQuantity(this.product.GUID);
+      this.buttonType = this.addedQuantity > 0 ? 'quantity' : 'add';
+    }
+
+    // Подписываемся на изменения корзины
+    this.cartSubscription = this.cartService.cart$.subscribe(items => {
+      if (this.product) {
+        const item = items.find(item => item.product.GUID === this.product!.GUID);
+        this.addedQuantity = item ? item.quantity : 0;
+        this.buttonType = this.addedQuantity > 0 ? 'quantity' : 'add';
+      }
+    });
   }
 
   // Добавить товар в корзину
@@ -134,7 +164,6 @@ export class ItemComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    // Отписываемся от подписки при уничтожении компонента
     if (this.cartSubscription) {
       this.cartSubscription.unsubscribe();
     }

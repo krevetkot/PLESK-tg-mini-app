@@ -1,6 +1,10 @@
 <div class="item-container">
   <!-- Карусель изображений -->
-  <div class="carousel-container">
+  <div class="carousel-container"
+       (touchstart)="onTouchStart($event)"
+       (touchmove)="onTouchMove($event)"
+       (touchend)="onTouchEnd($event)">
+
     <div class="carousel-slide">
       <img
         [src]="currentImage"
@@ -15,7 +19,7 @@
     <button class="carousel-btn next" (click)="nextImage()">›</button>
 
     <div class="carousel-indicators">
-      @for (img of productImages; track $index; let i = $index) {
+        @for (img of productImages; track $index; let i = $index) {
     <button
       class="indicator"
       [class.active]="currentImageIndex === i"
