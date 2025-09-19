@@ -34,6 +34,7 @@ export class ShopComponent implements OnInit{
     this.productService.getProducts().subscribe({
       next: (products) => {
         this.products = products;
+        console.log(products[0].file);
         this.filteredProducts = products;
         this.sortProducts(); // Сортировка по умолчанию
         this.loading = false;

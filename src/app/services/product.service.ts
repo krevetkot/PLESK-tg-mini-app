@@ -26,7 +26,7 @@ export class ProductService {
             categoryName: item.categoryName,
             categoryGUID: item.categoryGUID,
             price: Number(item.price),
-            file: item.file ?? undefined
+            file: item.file ? `${environment.photosUrl}${item.file}` : undefined
           }));
         }
         throw new Error('API returned error status');

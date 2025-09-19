@@ -78,7 +78,7 @@
   <div class="product-card" (click)="navigateToItemPage(product.GUID)">
     <!-- Изображение товара -->
     <div class="product-image-container">
-      <img [src]="product.imageUrl" [alt]="product.name" loading="lazy" class="product-img">
+      <img [src]="product.file" alt="Нет фото" loading="lazy" class="product-img">
     </div>
 
     <div class="product-info">
