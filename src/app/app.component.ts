@@ -1,8 +1,7 @@
 import {Component, inject, OnInit} from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import {CommonModule} from '@angular/common';
-import {TelegramWebappService} from '@zakarliuka/ng-telegram-webapp';
-import {environment} from '../environments/environment';
+import {AuthService} from './services/auth.service';
 
 @Component({
   selector: 'app-root',
@@ -13,22 +12,17 @@ import {environment} from '../environments/environment';
 export class AppComponent implements OnInit {
   title = 'PLESK-tg-mini-app';
 
-  private readonly telegramService = inject(TelegramWebappService)
+  constructor(private authService: AuthService) {}
 
-  ngOnInit() {
-    console.log(this.telegramService.initData);
-    // Получаем данные initData
-    const initData = this.telegramService.initData;
+  async ngOnInit() {
+    await this.performAuth();
+  }
 
-    // Передаем initData на сервер
-    fetch(`${environment.apiUrl}user`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({initData})
-    }).then(response => response.text()).then(data => {
-      console.log("Ответ от сервера:", data);
-    });
+  async performAuth(): Promise<void> {
+    try {
+      await this.authService.authenticate();
+    } catch (error) {
+      console.error('Ошибка аутентификации:', error);
+    }
   }
 }

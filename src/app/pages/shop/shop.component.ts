@@ -4,6 +4,8 @@ import {ProductService} from '../../services/product.service';
 import {CommonModule} from '@angular/common';
 import {FormsModule} from '@angular/forms';
 import { Router } from '@angular/router';
+import {AuthService} from '../../services/auth.service';
+import {Subscription} from 'rxjs';
 
 @Component({
   selector: 'app-shop',
@@ -18,17 +20,35 @@ export class ShopComponent implements OnInit{
   loading = true;
   searchTerm: string = '';
   isSticky: boolean = true;
+  private authSubscription!: Subscription;
+  isAuthenticated = false;
 
   categories: string[] = [];
   selectedCategory: string = 'Все';
   selectedSort: string = 'name';
 
   constructor(private productService: ProductService,
-              private router: Router) {}
+              private router: Router,
+              private authService: AuthService) {}
 
   ngOnInit(): void {
-    this.loadProducts();
-    this.loadCategories();
+    // подписываемся на состояние аутентификации
+    this.authSubscription = this.authService.authStatus$.subscribe(
+      authenticated => {
+        this.isAuthenticated = authenticated;
+        if (authenticated) {
+          this.loadProducts();
+          this.loadCategories();
+        }
+      }
+    );
+
+    // Если уже аутентифицированы, загружаем товары сразу
+    if (this.authService.isAuthenticated()) {
+      this.isAuthenticated = true;
+      this.loadProducts();
+      this.loadCategories();
+    }
   }
 
   loadProducts(): void {
