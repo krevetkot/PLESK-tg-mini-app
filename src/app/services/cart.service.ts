@@ -23,13 +23,13 @@ export class CartService {
 
     if (existingItem) {
       // Увеличиваем количество, но не больше максимума
-      const newQuantity = existingItem.quantity + quantity;
-      existingItem.quantity = newQuantity;
-      existingItem.total = existingItem.quantity * existingItem.product.price;
+      const newQuantity = existingItem.count + quantity;
+      existingItem.count = newQuantity;
+      existingItem.total = existingItem.count * existingItem.product.price;
     } else {
       // Добавляем новый товар
       const newItem: OrderItem = {
-        quantity: quantity,
+        count: quantity,
         product: product,
         total: quantity * product.price
       };
@@ -47,8 +47,8 @@ export class CartService {
       if (quantity <= 0) {
         this.removeFromCart(productId);
       } else {
-        item.quantity = quantity;
-        item.total = item.quantity * item.product.price;
+        item.count = quantity;
+        item.total = item.count * item.product.price;
         this.saveCart();
       }
     }
@@ -73,7 +73,7 @@ export class CartService {
 
   // Получить общее количество товаров
   getTotalItems(): number {
-    return this.orderItems.reduce((total, item) => total + item.quantity, 0);
+    return this.orderItems.reduce((total, item) => total + item.count, 0);
   }
 
   // Получить все товары в корзине
@@ -89,7 +89,7 @@ export class CartService {
   // Получить количество конкретного товара
   getItemQuantity(productId: string): number {
     const item = this.orderItems.find(item => item.product.GUID === productId);
-    return item ? item.quantity : 0;
+    return item ? item.count : 0;
   }
 
   // Получить OrderItem по productId

@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 import { CartService } from '../../services/cart.service';
 import { OrderItem } from '../../models/order-item';
 import {Order} from '../../models/order';
+import {environment} from '../../../environments/environment';
 
 @Component({
   selector: 'app-cart',
@@ -19,6 +20,8 @@ export class CartComponent implements OnInit {
   shippingDate: string = '';
   isEmpty: boolean = true;
   orderComment: string = '';
+
+  private order!: Order;
 
   constructor(
     private cartService: CartService,
@@ -44,11 +47,11 @@ export class CartComponent implements OnInit {
   }
 
   increaseQuantity(item: OrderItem): void {
-    this.cartService.updateQuantity(item.product.GUID, item.quantity + 1);
+    this.cartService.updateQuantity(item.product.GUID, item.count + 1);
   }
 
   decreaseQuantity(item: OrderItem): void {
-    this.cartService.updateQuantity(item.product.GUID, item.quantity - 1);
+    this.cartService.updateQuantity(item.product.GUID, item.count - 1);
   }
 
   updateQuantity(item: OrderItem, event: Event): void {
@@ -81,11 +84,26 @@ export class CartComponent implements OnInit {
     if (!this.isShippingDateValid()) {
       alert('Пожалуйста, укажите дату отгрузки.');
     } else {
-        console.log('Оформление заказа:', {
-          items: this.orderItems,
-          total: this.totalAmount,
-          shippingDate: this.shippingDate
-        });
+      this.order = {
+        items: this.orderItems.map(item => ({
+          GUID: item.product.GUID,
+          count: item.count
+        })),
+        comment: this.orderComment,
+        shippingDate: new Date(this.shippingDate)
+      };
+
+      console.log("total: " + this.totalAmount );
+
+      fetch(`${environment.apiUrl}post-order`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(this.order)
+      }).catch(error => {
+        console.error('Ошибка аутентификации:', error);
+      });
 
         this.cartService.clearCart();
         alert('Заказ успешно оформлен!');

@@ -32,14 +32,14 @@
       <button
         class="quantity-btn minus"
         (click)="decreaseQuantity(item)"
-        [disabled]="item.quantity <= 1"
+        [disabled]="item.count <= 1"
       >
         −
       </button>
 
       <input
         type="number"
-        [value]="item.quantity"
+        [value]="item.count"
         (change)="updateQuantity(item, $event)"
         min="1"
         class="quantity-input"
@@ -54,7 +54,7 @@
     </div>
 
     <div class="item-total">
-      <span class="total-price">{{ (item.product.price * item.quantity) | number:'1.2-2' }} ₽</span>
+      <span class="total-price">{{ (item.product.price * item.count) | number:'1.2-2' }} ₽</span>
     </div>
 
     <button class="remove-btn" (click)="removeItem(item.product.GUID)">
