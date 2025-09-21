@@ -106,7 +106,7 @@ export class CartComponent implements OnInit {
       });
 
         this.cartService.clearCart();
-        alert('Заказ успешно оформлен!');
+        alert('Спасибо за заказ! Наш менеджер свяжется с Вами в ближайшее время.');
       }
   }
 

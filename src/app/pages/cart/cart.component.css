@@ -208,8 +208,6 @@
   padding: 25px;
   border-radius: 12px;
   box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
-  position: sticky;
-  bottom: 0;
 }
 
 .shipping-date {
@@ -253,8 +251,8 @@
 }
 
 .total-line span:first-child {
-  font-size: 20px;
-  color: #666;
+  font-size: 22px;
+  color: #000000;
 }
 
 .total-amount {
@@ -334,10 +332,17 @@
 
   .total-amount {
     font-size: 24px;
+    font-weight: 600;
   }
 
   .checkout-btn {
     padding: 12px 20px;
     font-size: 14px;
   }
+}
+
+.order-comment label{
+  color: #333;
+  margin-bottom: 20px;
+  font-weight: 600;
 }
