@@ -2,6 +2,7 @@ import {Component, inject, OnInit} from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import {CommonModule} from '@angular/common';
 import {AuthService} from './services/auth.service';
+import {resolve} from '@angular/compiler-cli';
 
 @Component({
   selector: 'app-root',

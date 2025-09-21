@@ -129,6 +129,7 @@
 .add-to-cart-1-item-btn {
   background: #0056b3;
   color: white;
+  width: 100%;
 }
 
 .add-to-cart-1-item-btn:hover:not(:disabled) {
@@ -136,15 +137,6 @@
   transform: translateY(-2px);
 }
 
-.add-to-cart-1-box-btn {
-  background: #5682b2;
-  color: white;
-}
-
-.add-to-cart-1-box-btn:hover:not(:disabled) {
-  background: #466a92;
-  transform: translateY(-2px);
-}
 
 .add-to-cart-1-item-btn:disabled,
 .add-to-cart-1-box-btn:disabled {
@@ -154,24 +146,6 @@
   transform: none;
 }
 
-/* Состояние нет в наличии */
-.out-of-stock {
-  opacity: 0.7;
-  position: relative;
-}
-
-.out-of-stock::after {
-  content: 'Нет в наличии';
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  background: rgba(0, 0, 0, 0.8);
-  color: white;
-  padding: 10px 20px;
-  border-radius: 20px;
-  font-weight: 600;
-}
 
 /* Адаптивность */
 @media (max-width: 968px) {
@@ -239,6 +213,7 @@
 
 /* Стили для управления количеством */
 .quantity-controls {
+  width: 100%;
   display: flex;
   align-items: center;
   gap: 15px;
@@ -246,6 +221,7 @@
   padding: 15px 20px;
   border-radius: 50px;
   border: 2px solid #e9ecef;
+  justify-content: space-between;
 }
 
 .quantity-btn {

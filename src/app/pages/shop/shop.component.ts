@@ -36,6 +36,7 @@ export class ShopComponent implements OnInit{
     this.authSubscription = this.authService.authStatus$.subscribe(
       authenticated => {
         this.isAuthenticated = authenticated;
+        console.log(authenticated);
         if (authenticated) {
           this.loadProducts();
           this.loadCategories();
@@ -81,6 +82,7 @@ export class ShopComponent implements OnInit{
     this.productService.getCategories().subscribe({
       next: (categoryNames) => {
         this.categories = ['Все'].concat(categoryNames);
+        console.log("categories:" + this.categories);
       },
       error: (error) => {
         console.error('Ошибка:', error);

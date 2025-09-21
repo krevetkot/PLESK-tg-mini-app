@@ -47,6 +47,11 @@ export class AuthService {
       }).then(response => response.text()).then(data => {
         console.log("Ответ от сервера:", data);
         localStorage.setItem(this.AUTH_KEY, 'true');
+        this.authStatus.next(true);
+        resolve(true);
+      }).catch(error => {
+        console.error('Ошибка аутентификации:', error);
+        reject(error);
       });
     });
 

@@ -34,33 +34,9 @@
   <div class="product-info">
     <h2 class="product-name">{{ product?.name }}</h2>
     <div class="product-price">
-      {{ product?.price | number:'1.2-2' }} ₽
+      {{ product?.price }} ₽
     </div>
     <p class="product-description">{{product?.description}}</p>
-
-<!--    <div class="specs-container">-->
-<!--      <h3 class="specs-title">Характеристики</h3>-->
-<!--      <table class="item-info-table">-->
-<!--        <tbody>-->
-<!--        <tr>-->
-<!--          <td class="left-column">Страна производитель:</td>-->
-<!--          <td class="right-column">{{product.origin_country}}</td>-->
-<!--        </tr>-->
-<!--        <tr>-->
-<!--          <td class="left-column">В наличии:</td>-->
-<!--          <td class="right-column">{{product.stock}} шт.</td>-->
-<!--        </tr>-->
-<!--        <tr>-->
-<!--          <td class="left-column">Количество в коробке:</td>-->
-<!--          <td class="right-column">{{product.number_in_box}} шт.</td>-->
-<!--        </tr>-->
-<!--        <tr>-->
-<!--          <td class="left-column">Артикул:</td>-->
-<!--          <td class="right-column">{{product.GUID}}</td>-->
-<!--        </tr>-->
-<!--        </tbody>-->
-<!--      </table>-->
-<!--    </div>-->
 
     <div class="add-btns-container">
       @if (addedQuantity === 0) {
@@ -79,9 +55,6 @@
         </div>
       }
 
-<!--      <button class="add-to-cart-1-box-btn" (click)="addToCart(product.number_in_box)" [disabled]="product.stock === 0">-->
-<!--      {{ product.stock === 0 ? 'Нет в наличии' : 'Добавить 1 кор.' }}-->
-<!--      </button>-->
     </div>
   </div>
 </div>
