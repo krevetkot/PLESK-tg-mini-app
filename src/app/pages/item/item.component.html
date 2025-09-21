@@ -52,9 +52,15 @@
           <button class="quantity-btn plus" (click)="increaseQuantity()">
             +
           </button>
-        </div>
+       </div>
       }
-
+    </div>
+    <div>
+      @if (addedQuantity !== 0) {
+        <button class="go-to-cart-button" (click)="navigateToCart()">
+          Оформить
+        </button>
+      }
     </div>
   </div>
 </div>

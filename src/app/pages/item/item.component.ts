@@ -4,7 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { CartService } from '../../services/cart.service';
 import { Product } from '../../models/product';
 import { ProductService } from '../../services/product.service';
-import { ActivatedRoute } from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 import { Subscription } from 'rxjs';
 
 @Component({
@@ -29,7 +29,8 @@ export class ItemComponent implements OnInit, OnDestroy {
   constructor(
     private cartService: CartService,
     private productService: ProductService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
@@ -167,5 +168,9 @@ export class ItemComponent implements OnInit, OnDestroy {
     if (this.cartSubscription) {
       this.cartSubscription.unsubscribe();
     }
+  }
+
+  navigateToCart() {
+    this.router.navigate(['/cart']).then(r => console.log("Can't open the cart."));
   }
 }

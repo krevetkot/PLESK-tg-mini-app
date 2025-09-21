@@ -113,8 +113,7 @@
   padding-top: 20px;
 }
 
-.add-to-cart-1-item-btn,
-.add-to-cart-1-box-btn {
+.add-to-cart-1-item-btn, .go-to-cart-button {
   flex: 1;
   padding: 16px 20px;
   border: none;
@@ -126,20 +125,19 @@
   min-height: 55px;
 }
 
-.add-to-cart-1-item-btn {
+.add-to-cart-1-item-btn, .go-to-cart-button {
   background: #0056b3;
   color: white;
   width: 100%;
 }
 
-.add-to-cart-1-item-btn:hover:not(:disabled) {
+.add-to-cart-1-item-btn:hover:not(:disabled), .go-to-cart-button:hover:not(:disabled) {
   background: #004494;
   transform: translateY(-2px);
 }
 
 
-.add-to-cart-1-item-btn:disabled,
-.add-to-cart-1-box-btn:disabled {
+.add-to-cart-1-item-btn:disabled{
   background: #6c757d;
   color: #adb5bd;
   cursor: not-allowed;
@@ -184,8 +182,7 @@
     gap: 10px;
   }
 
-  .add-to-cart-1-item-btn,
-  .add-to-cart-1-box-btn {
+  .add-to-cart-1-item-btn, .quantity-controls {
     width: 100%;
   }
 
@@ -213,7 +210,7 @@
 
 /* Стили для управления количеством */
 .quantity-controls {
-  width: 100%;
+  width: 90%;
   display: flex;
   align-items: center;
   gap: 15px;
