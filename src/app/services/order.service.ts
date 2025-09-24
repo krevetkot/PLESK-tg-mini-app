@@ -19,14 +19,15 @@ export class OrderService {
     return this.http.get<OrdersResponse>(this.apiUrl + 'orders').pipe(
       map(response => {
         if (response.status === 'success') {
-          return response.items.map(item => ({
-            id: item.id,
-            status_id: item.status_id,
-            ordered: item.ordered,
-            total: item.total,
-            comment: item.comment,
-            shippingDate: item.shippingDate ?? undefined
-          }));
+          return response.items.map(apiOrder => ({
+            id: apiOrder.id,
+            status_id: apiOrder.status_id,
+            ordered: apiOrder.ordered,
+            total: apiOrder.total,
+            comment: apiOrder.comment,
+            shippingDate: apiOrder.shippingDate ? new Date(apiOrder.shippingDate) : undefined,
+            items: []
+          } as Order));
         }
         throw new Error('API returned error status');
       }),
@@ -38,16 +39,17 @@ export class OrderService {
   }
 
   getOrderDetails(orderId: number): Observable<OrderItem[]> {
-    return this.http.get<any>(this.apiUrl + 'orders?id=' + orderId).pipe(
+    return this.http.get<OrderDetailsResponse>(this.apiUrl + 'orders?id=' + orderId).pipe(
       map(response => {
         if (response.status === 'success') {
-          return response.items.map(item => ({
-            GUID: item.GUID,
-            name: item.name,
-            price: Number(item.price),
-            count: item.count,
-            file: item.file ? `${environment.photosUrl}${item.file}` : null
-          }));
+          return response.items.map(apiItem => ({
+            GUID: apiItem.GUID,
+            name: apiItem.name,
+            price: Number(apiItem.price),
+            count: apiItem.count,
+            file: apiItem.file ? `${environment.photosUrl}${apiItem.file}` : undefined,
+            total: Number(apiItem.price) * apiItem.count
+          } as OrderItem));
         }
         throw new Error('API returned error status');
       }),
@@ -59,15 +61,31 @@ export class OrderService {
   }
 }
 
-
-export interface OrdersResponse {
+interface OrdersResponse {
   status: string;
-  items: Order[];
-  token: string;
+  items: ApiOrder[];
+  token?: string;
 }
 
-export interface OrderDetailsResponse {
+interface OrderDetailsResponse {
   status: string;
-  items: OrderItem[];
-  token: string;
+  items: ApiOrderItem[];
+  token?: string;
+}
+
+interface ApiOrder {
+  id: number;
+  status_id: number;
+  ordered: string;
+  total: number;
+  comment?: string;
+  shippingDate?: string;
+}
+
+interface ApiOrderItem {
+  GUID: string;
+  name: string;
+  price: string;
+  count: number;
+  file?: string | null;
 }

@@ -62,7 +62,9 @@ export class ProductService {
           const productPhotos = response.photos;
 
           for (const key of Object.keys(productPhotos)) {
-            imgUrls.push(`${environment.photosUrl}${productPhotos[key]}`);
+            if (productPhotos) {
+              imgUrls.push(`${environment.photosUrl}${productPhotos[key]}`);
+            }
           }
 
           return {

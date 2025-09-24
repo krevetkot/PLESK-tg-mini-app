@@ -84,7 +84,7 @@ export class CartComponent implements OnInit {
     if (!this.isShippingDateValid()) {
       alert('Пожалуйста, укажите дату отгрузки.');
     } else {
-      this.order = {
+      const orderData = {
         items: this.orderItems.map(item => ({
           GUID: item.GUID,
           count: item.count
@@ -100,7 +100,7 @@ export class CartComponent implements OnInit {
         headers: {
           "Content-Type": "application/json"
         },
-        body: JSON.stringify(this.order)
+        body: JSON.stringify(orderData)
       }).catch(error => {
         console.error('Ошибка аутентификации:', error);
       });

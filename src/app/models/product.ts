@@ -1,7 +1,7 @@
 export interface Product {
   GUID: string;
   name: string;
-  categoryName?: string;
+  categoryName: string;
   categoryGUID?: string;
   price: number;
   description?: string;

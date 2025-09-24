@@ -17,7 +17,7 @@
     <h1 class="cart-title">Корзина</h1>
 
     <div class="cart-items">
-      @for (item of orderItems; track item.product.GUID) {
+      @for (item of orderItems; track item.GUID) {
   <div class="cart-item">
     <div class="item-image">
       <img [src]="item.file" [alt]="item.name" loading="lazy">

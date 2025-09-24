@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 
-import {Profile} from '../../models/profile';
 import {Order} from '../../models/order';
 import {OrderService} from '../../services/order.service';
 import {CommonModule} from '@angular/common';
 import {FormsModule} from '@angular/forms';
+import {environment} from '../../../environments/environment';
 
 @Component({
   standalone: true,
@@ -14,6 +14,7 @@ import {FormsModule} from '@angular/forms';
   imports: [CommonModule, FormsModule],
 })
 export class HistoryComponent implements OnInit {
+  expandedOrders: Set<number> = new Set();
   orders: Order[] = [];
   loading: boolean = true;
 
@@ -21,8 +22,6 @@ export class HistoryComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadOrders();
-    console.log("Заказы загружены: ");
-    console.log(this.orders);
   }
 
   loadOrders(): void {
@@ -36,8 +35,6 @@ export class HistoryComponent implements OnInit {
       }
     });
   }
-
-
 
   getStatusText(status: number | undefined): string {
     if (status) {
@@ -56,12 +53,35 @@ export class HistoryComponent implements OnInit {
     }
   }
 
-  getStatusClass(status: string): string {
-    switch (status) {
-      case 'delivered': return 'status-delivered';
-      case 'processing': return 'status-processing';
-      case 'shipped': return 'status-shipped';
-      default: return '';
+  toggleOrderDetails(orderId: number) {
+    if (this.expandedOrders.has(orderId)) {
+      this.expandedOrders.delete(orderId);
+    } else {
+      this.expandedOrders.add(orderId);
+      this.loadOrderDetails(orderId);
     }
+  }
+
+  isOrderExpanded(orderId: number): boolean {
+    return this.expandedOrders.has(orderId);
+  }
+
+  loadOrderDetails(orderId: number) {
+    const order = this.orders.find(o => o.id === orderId);
+    if (order) {
+      this.orderService.getOrderDetails(orderId).subscribe({
+        next: (response) => {
+          order.items = response;
+        },
+        error: (error) => {
+          console.error('Ошибка загрузки деталей заказа:', error);
+        }
+      });
+    }
+  }
+
+  // Расчет общей суммы заказа
+  calculateOrderTotal(items: any[]): number {
+    return items.reduce((total, item) => total + (parseFloat(item.price) * item.count), 0);
   }
 }

@@ -11,7 +11,7 @@
     } @else {
     <div class="orders-list">
       @for (order of orders; track order.id) {
-    <div class="order-card">
+    <div class="order-card" (click)="toggleOrderDetails(order.id)">
       <div class="order-header">
         <div class="order-info">
           <h3 class="order-number">Заказ №{{ order.id }}</h3>
@@ -22,21 +22,51 @@
                 {{ getStatusText(order.status_id) }}
               </span>
         </div>
+        <div class="order-arrow">
+          <i class="arrow" [class.arrow-down]="isOrderExpanded(order.id)"></i>
+        </div>
       </div>
 
-      <!--
+      <!-- Блок с деталями заказа -->
+      @if (isOrderExpanded(order.id)) {
+      <div class="order-details">
+
+      <!-- Список товаров -->
+      @if (order.items && order.items.length > 0) {
       <div class="order-items">
-        @for (item of order.items; track item.product.id) {
-          <div class="order-item">
-            <div class="item-info">
-              <span class="item-name">{{ item.product.name }}</span>
-              <span class="item-details">{{ item.quantity }} шт. × {{ item.product.price}} ₽</span>
-            </div>
-            <div class="item-total">{{ item.total}} ₽</div>
-          </div>
+        <div class="items-header">
+          <span>Товары</span>
+          <span>Количество</span>
+          <span>Сумма</span>
+        </div>
+
+        @for (item of order.items; track item.GUID) {
+        <div class="order-item">
+          <div class="item-info">
+            <div class="item-image">
+              @if (item.file) {
+        <img [src]="item.file">
+        } @else {
+        <div class="no-image">Нет фото</div>
+        }
+        </div>
+        <div class="item-details">
+          <span class="item-name">{{ item.name }}</span>
+                    <span class="item-price">{{ item.price }} ₽/шт</span>
+                  </div>
+                </div>
+                <div class="item-quantity">
+                  <span class="quantity-badge">{{ item.count }} шт</span>
+                </div>
+                <div class="item-total">
+        {{ (item.price * item.count) }} ₽
+                </div>
+              </div>
         }
       </div>
-      -->
+      }
+      </div>
+      }
 
       <div class="order-footer">
         <div class="order-total">

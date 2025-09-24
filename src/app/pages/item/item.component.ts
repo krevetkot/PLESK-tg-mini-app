@@ -130,7 +130,7 @@ export class ItemComponent implements OnInit, OnDestroy {
     // Подписываемся на изменения корзины
     this.cartSubscription = this.cartService.cart$.subscribe(items => {
       if (this.product) {
-        const item = items.find(item => item.product.GUID === this.product!.GUID);
+        const item = items.find(item => item.GUID === this.product!.GUID);
         this.addedQuantity = item ? item.count : 0;
         this.buttonType = this.addedQuantity > 0 ? 'quantity' : 'add';
       }
