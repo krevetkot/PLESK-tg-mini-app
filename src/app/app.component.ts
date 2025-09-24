@@ -11,7 +11,7 @@ import {resolve} from '@angular/compiler-cli';
   styleUrl: './app.component.css'
 })
 export class AppComponent implements OnInit {
-  title = 'PLESK-tg-mini-app';
+  title = 'It\'s PLESK';
 
   constructor(private authService: AuthService) {}
 

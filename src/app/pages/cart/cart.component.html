@@ -20,7 +20,7 @@
       @for (item of orderItems; track item.product.GUID) {
   <div class="cart-item">
     <div class="item-image">
-      <img [src]="item.product.imageUrl" [alt]="item.product.name" loading="lazy">
+      <img [src]="item.product.file" [alt]="item.product.name" loading="lazy">
     </div>
 
     <div class="item-details">
@@ -91,15 +91,14 @@
 
     <div class="order-summary">
       <div class="total-line">
-        <span>Итого:</span>
+        <span class="total-label"> Итого:</span>
         <span class="total-amount"> {{ totalAmount }} ₽</span>
           </div>
-
+        </div>
+      </div>
           <button class="checkout-btn" (click)="checkout()">
             Оформить заказ
           </button>
-        </div>
-      </div>
     </div>
   }
 </div>

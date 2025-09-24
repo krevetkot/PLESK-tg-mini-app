@@ -244,24 +244,44 @@
   gap: 20px;
 }
 
+/*.total-line {*/
+/*  display: flex;*/
+/*  flex-direction: column;*/
+/*  gap: 5px;*/
+/*}*/
+
+/*.total-line span:first-child {*/
+/*  font-size: 22px;*/
+/*  color: #000000;*/
+/*}*/
+
 .total-line {
   display: flex;
-  flex-direction: column;
-  gap: 5px;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  padding: 10px 0;
+  text-align: end;
 }
 
-.total-line span:first-child {
+.total-label {
   font-size: 22px;
+  font-weight: bold;
   color: #000000;
 }
 
 .total-amount {
-  font-size: 28px;
-  font-weight: 700;
+  font-size: 40px;
+  font-weight: bold;
+  flex-grow: 1;
+  margin-left: 20px;
+  /*text-align: center;*/
   color: #007bff;
 }
 
 .checkout-btn {
+  width: 60%;
+  align-self: center;
   background: #28a745;
   color: white;
   border: none;
@@ -277,6 +297,10 @@
 .checkout-btn:hover {
   background: #218838;
   transform: translateY(-2px);
+}
+
+.orderComment {
+  margin-right: 20px;
 }
 
 /* Адаптивность */
@@ -341,8 +365,11 @@
   }
 }
 
-.order-comment label{
+.order-comment label {
   color: #333;
-  margin-bottom: 20px;
   font-weight: 600;
+}
+
+.order-comment textarea {
+  margin-top: 10px;
 }
