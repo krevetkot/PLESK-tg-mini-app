@@ -7,25 +7,35 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="icon" type="image/x-icon" href="icon.png">
   <script defer src="https://telegram.org/js/telegram-web-app.js?59"></script>
-<!--  <script>-->
-<!--     window.onload = function () {-->
-<!--      console.log('load');-->
-<!--      const initData = Telegram.WebApp.initData;-->
+<script>
+  window.onload = function () {
 
-<!--      // Передаем initData на сервер-->
-<!--      fetch("https://telebot-dev.03it.ru:8443/web-app/user", {-->
-<!--        method: "POST",-->
-<!--        headers: {-->
-<!--          "Content-Type": "application/json"-->
-<!--        },-->
-<!--        body: JSON.stringify({ initData })-->
-<!--      }).then(response => response.text()).then(data => {-->
-<!--        console.log("Ответ от сервера:", data);-->
-<!--        //$('.response').text(data);-->
-<!--      });-->
+    let WebApp = window.Telegram.WebApp;
 
-<!--    };-->
-<!--  </script>-->
+    // let navigate = navigator
+    var BackButton = WebApp.BackButton;
+    BackButton.onClick(function() {
+      window.history.go(-1)
+    });
+
+    if (window.history.length > 1){
+      BackButton.show();
+    } else {
+      BackButton.hide();
+    }
+
+    var CartButton = WebApp.MainButton;
+    CartButton.setText("cart");
+    if (window.location.pathname === "/cart"){
+      CartButton.hide();
+    } else {
+      CartButton.show();
+    }
+    CartButton.onClick(function() {
+      window.location.assign("/cart");
+    });
+  }
+</script>
 </head>
 <body>
   <app-root></app-root>

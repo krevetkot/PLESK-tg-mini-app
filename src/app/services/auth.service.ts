@@ -33,7 +33,6 @@ export class AuthService {
 
     // Создаем новый промис для аутентификации
     this.authPromise = new Promise<boolean>((resolve, reject) => {
-      console.log(this.telegramService.initData);
       // Получаем данные initData
       const initData = this.telegramService.initData;
 
