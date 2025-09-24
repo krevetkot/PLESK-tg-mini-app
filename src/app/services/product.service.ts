@@ -11,7 +11,7 @@ import {Response} from '../models/response';
 export class ProductService {
   private apiUrl: string = environment.apiUrl;
   private http = inject(HttpClient);
-  private foo: string = 'foo.jpg';
+  private foo: string = environment.foo;
 
   constructor() {}
 

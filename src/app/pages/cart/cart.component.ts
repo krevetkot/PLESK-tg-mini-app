@@ -47,11 +47,11 @@ export class CartComponent implements OnInit {
   }
 
   increaseQuantity(item: OrderItem): void {
-    this.cartService.updateQuantity(item.product.GUID, item.count + 1);
+    this.cartService.updateQuantity(item.GUID, item.count + 1);
   }
 
   decreaseQuantity(item: OrderItem): void {
-    this.cartService.updateQuantity(item.product.GUID, item.count - 1);
+    this.cartService.updateQuantity(item.GUID, item.count - 1);
   }
 
   updateQuantity(item: OrderItem, event: Event): void {
@@ -59,7 +59,7 @@ export class CartComponent implements OnInit {
     const quantity = parseInt(input.value, 10);
 
     if (!isNaN(quantity) && quantity >= 0) {
-      this.cartService.updateQuantity(item.product.GUID, quantity);
+      this.cartService.updateQuantity(item.GUID, quantity);
     }
   }
 
@@ -86,7 +86,7 @@ export class CartComponent implements OnInit {
     } else {
       this.order = {
         items: this.orderItems.map(item => ({
-          GUID: item.product.GUID,
+          GUID: item.GUID,
           count: item.count
         })),
         comment: this.orderComment,

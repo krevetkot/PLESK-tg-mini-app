@@ -20,12 +20,12 @@
       @for (item of orderItems; track item.product.GUID) {
   <div class="cart-item">
     <div class="item-image">
-      <img [src]="item.product.file" [alt]="item.product.name" loading="lazy">
+      <img [src]="item.file" [alt]="item.name" loading="lazy">
     </div>
 
     <div class="item-details">
-      <h3 class="item-name">{{ item.product.name }}</h3>
-      <p class="item-price">{{ item.product.price }} ₽/шт</p>
+      <h3 class="item-name">{{ item.name }}</h3>
+      <p class="item-price">{{ item.price }} ₽/шт</p>
     </div>
 
     <div class="quantity-controls">
@@ -54,10 +54,10 @@
     </div>
 
     <div class="item-total">
-      <span class="total-price">{{ (item.product.price * item.count) }} ₽</span>
+      <span class="total-price">{{ (item.price * item.count) }} ₽</span>
     </div>
 
-    <button class="remove-btn" (click)="removeItem(item.product.GUID)">
+    <button class="remove-btn" (click)="removeItem(item.GUID)">
       ×
     </button>
   </div>

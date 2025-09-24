@@ -19,20 +19,24 @@ export class CartService {
 
   // Добавить товар в корзину
   addToCart(product: Product, quantity: number): void {
-    const existingItem = this.orderItems.find(item => item.product.GUID === product.GUID);
+    const existingItem = this.orderItems.find(item => item.GUID === product.GUID);
 
     if (existingItem) {
       // Увеличиваем количество, но не больше максимума
       const newQuantity = existingItem.count + quantity;
       existingItem.count = newQuantity;
-      existingItem.total = existingItem.count * existingItem.product.price;
+      existingItem.total = existingItem.count * existingItem.price;
     } else {
       // Добавляем новый товар
       const newItem: OrderItem = {
         count: quantity,
-        product: product,
+        name: product.name,
+        GUID: product.GUID,
+        file: product.file,
+        price: product.price,
         total: quantity * product.price
       };
+
       this.orderItems.push(newItem);
     }
 
@@ -42,13 +46,13 @@ export class CartService {
 
   // Обновить количество товара
   updateQuantity(productId: string, quantity: number): void {
-    const item = this.orderItems.find(item => item.product.GUID === productId);
+    const item = this.orderItems.find(item => item.GUID === productId);
     if (item) {
       if (quantity <= 0) {
         this.removeFromCart(productId);
       } else {
         item.count = quantity;
-        item.total = item.count * item.product.price;
+        item.total = item.count * item.price;
         this.saveCart();
       }
     }
@@ -56,7 +60,7 @@ export class CartService {
 
   // Удалить товар из корзины
   removeFromCart(productId: string): void {
-    this.orderItems = this.orderItems.filter(item => item.product.GUID !== productId);
+    this.orderItems = this.orderItems.filter(item => item.GUID !== productId);
     this.saveCart();
   }
 
@@ -83,18 +87,18 @@ export class CartService {
 
   // Проверить, есть ли товар в корзине
   hasItem(productId: string): boolean {
-    return this.orderItems.some(item => item.product.GUID === productId);
+    return this.orderItems.some(item => item.GUID === productId);
   }
 
   // Получить количество конкретного товара
   getItemQuantity(productId: string): number {
-    const item = this.orderItems.find(item => item.product.GUID === productId);
+    const item = this.orderItems.find(item => item.GUID === productId);
     return item ? item.count : 0;
   }
 
   // Получить OrderItem по productId
   getOrderItem(productId: string): OrderItem | undefined {
-    return this.orderItems.find(item => item.product.GUID === productId);
+    return this.orderItems.find(item => item.GUID === productId);
   }
 
   // Сохранить корзину в localStorage

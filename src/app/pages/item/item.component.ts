@@ -6,6 +6,7 @@ import { Product } from '../../models/product';
 import { ProductService } from '../../services/product.service';
 import {ActivatedRoute, Router} from '@angular/router';
 import { Subscription } from 'rxjs';
+import {environment} from '../../../environments/environment';
 
 @Component({
   selector: 'app-item',
@@ -64,7 +65,7 @@ export class ItemComponent implements OnInit, OnDestroy {
   private initializeCarousel(): void {
     if (this.product && this.product.imageUrl) {
       this.productImages = this.product.imageUrl;
-      this.currentImage = this.productImages[0] || 'foo.jpg';
+      this.currentImage = this.productImages[0] || environment.foo;
     }
   }
 
