@@ -9,8 +9,6 @@ import {Response} from '../models/response';
   providedIn: 'root'
 })
 export class ProductService {
-  private categories = ['Все', 'Электроника', 'Одежда', 'Книги']; //при подключении бд, я их выгружу оттуда
-  private products: Product[] = [];
   private apiUrl: string = environment.apiUrl;
   private http = inject(HttpClient);
   private foo: string = 'foo.jpg';

@@ -1,0 +1,51 @@
+<div class="profile-page-container">
+
+  <!-- История заказов -->
+  <div class="orders-section">
+    <h2>История заказов</h2>
+
+    @if (orders.length === 0) {
+    <div class="no-orders">
+      <p>У вас пока нет заказов</p>
+    </div>
+    } @else {
+    <div class="orders-list">
+      @for (order of orders; track order.id) {
+    <div class="order-card">
+      <div class="order-header">
+        <div class="order-info">
+          <h3 class="order-number">Заказ №{{ order.id }}</h3>
+          <span class="order-date">от {{ order.ordered | date:'dd.MM.yy'}}</span>
+        </div>
+        <div class="order-status">
+              <span class="status-badge status-{{order.status_id}}">
+                {{ getStatusText(order.status_id) }}
+              </span>
+        </div>
+      </div>
+
+      <!--
+      <div class="order-items">
+        @for (item of order.items; track item.product.id) {
+          <div class="order-item">
+            <div class="item-info">
+              <span class="item-name">{{ item.product.name }}</span>
+              <span class="item-details">{{ item.quantity }} шт. × {{ item.product.price}} ₽</span>
+            </div>
+            <div class="item-total">{{ item.total}} ₽</div>
+          </div>
+        }
+      </div>
+      -->
+
+      <div class="order-footer">
+        <div class="order-total">
+          <strong>Итого: {{ order.total }} ₽</strong>
+        </div>
+      </div>
+    </div>
+    }
+    </div>
+    }
+  </div>
+</div>
