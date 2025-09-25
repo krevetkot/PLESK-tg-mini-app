@@ -1,0 +1,11 @@
+<div class="bottom-nav">
+  <button class="nav-btn" (click)="navigateTo('/shop')" [class.active]="isActive('/shop')">
+    🏪
+  </button>
+  <button class="nav-btn" (click)="navigateTo('/history')" [class.active]="isActive('/history')">
+    📋
+  </button>
+  <button class="nav-btn" (click)="navigateTo('/cart')" [class.active]="isActive('/cart')">
+    🛒
+  </button>
+</div>

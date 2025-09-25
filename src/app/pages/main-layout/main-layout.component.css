@@ -1,0 +1,8 @@
+.main-layout {
+  min-height: 100vh;
+  position: relative;
+}
+.content {
+  padding-bottom: 70px;
+  min-height: calc(100vh - 70px);
+}
