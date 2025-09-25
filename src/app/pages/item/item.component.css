@@ -123,6 +123,12 @@
   cursor: pointer;
   transition: all 0.3s ease;
   min-height: 55px;
+
+  -webkit-tap-highlight-color: transparent;
+  outline: none;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  user-select: none;
 }
 
 .add-to-cart-1-item-btn, .go-to-cart-button {
@@ -134,6 +140,7 @@
 .add-to-cart-1-item-btn:hover:not(:disabled), .go-to-cart-button:hover:not(:disabled) {
   background: #004494;
   transform: translateY(-2px);
+  outline: none !important;
 }
 
 

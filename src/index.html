@@ -8,40 +8,37 @@
   <link rel="icon" type="image/x-icon" href="icon.png">
   <script defer src="https://telegram.org/js/telegram-web-app.js?59"></script>
 <script>
-    document.addEventListener('DOMContentLoaded', function() {
+  document.addEventListener('DOMContentLoaded', function() {
     const WebApp = Telegram.WebApp;
     const BackButton = WebApp.BackButton;
 
     if (window.history.length >= 1) {
-      BackButton.show();
-      WebApp.showAlert("bebe1");
+      BackButton.visible = false;
     } else {
       BackButton.hide();
-      WebApp.showAlert(window.history.length);
+
     }
 
     BackButton.onClick(function() {
-    if (window.history.length > 1) {
-      window.history.go(-1);
-      WebApp.showAlert("bebe3");
-    } else {
-      WebApp.close();
-      WebApp.showAlert("bebe4");
-    }
+      if (window.history.length > 1) {
+        window.history.back();
+      } else {
+        WebApp.close();
+      }
     });
 
     window.addEventListener('popstate', function() {
       if (window.history.length > 1) {
         BackButton.show();
-        WebApp.showAlert("bebe5");
       } else {
+        WebApp.showAlert(window.history.state);
         BackButton.hide();
-        WebApp.showAlert("bebe6");
       }
-      });
     });
+  });
 
-    // function navigateTo(path) {
+
+  // function navigateTo(path) {
     //   window.location.href = path;
     // }
 </script>

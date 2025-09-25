@@ -1,5 +1,6 @@
 import {Component, Injectable} from '@angular/core';
-import {Router} from '@angular/router';
+import {NavigationEnd, Router} from '@angular/router';
+import {filter} from 'rxjs';
 
 @Component({
   selector: 'app-bottom-nav',
@@ -12,11 +13,21 @@ import {Router} from '@angular/router';
   providedIn: 'root'
 })
 export class BottomNavComponent {
+  currentPath: string = '/';
 
-  constructor(private router: Router) {}
+  constructor(private router: Router) {
+    this.router.events
+      .pipe(filter(event => event instanceof NavigationEnd))
+      .subscribe((event: NavigationEnd) => {
+        this.currentPath = event.urlAfterRedirects || event.url;
+      });
+  }
 
   isActive(path: string): boolean {
-    return this.router.url === path;
+    if (path === '/') {
+      return this.currentPath === '/' || this.currentPath === '';
+    }
+    return this.currentPath === path;
   }
 
   navigateTo(path: string): void {
