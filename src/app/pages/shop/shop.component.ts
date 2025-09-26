@@ -39,6 +39,8 @@ export class ShopComponent implements OnInit{
         if (authenticated) {
           this.loadProducts();
           this.loadCategories();
+        } else {
+          this.loading = false;
         }
       }
     );

@@ -43,12 +43,18 @@ export class AuthService {
           "Content-Type": "application/json"
         },
         body: JSON.stringify({initData})
-      }).then(response => response.text()).then(data => {
-        console.log("Ответ от сервера:", data);
-        localStorage.setItem(this.AUTH_KEY, 'true');
-        this.authStatus.next(true);
-        resolve(true);
+      }).then(response => response.json()).then(data => {
+        console.log("Ответ от сервера:"+ data.text);
+        if (data.status === "success"){
+          localStorage.setItem(this.AUTH_KEY, 'false');
+          this.authStatus.next(true);
+          resolve(true);
+        } else {
+          this.authStatus.next(false);
+          resolve(false);
+        }
       }).catch(error => {
+        console.log("Ответ от сервера:"+ error);
         console.error('Ошибка аутентификации:', error);
         reject(error);
       });
