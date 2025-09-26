@@ -12,23 +12,35 @@
       const WebApp = Telegram.WebApp;
       const BackButton = WebApp.BackButton;
 
-      if (window.history.length >= 1) {
-        BackButton.show();
+      if (window.history.length === 1) {
+        history.replaceState({root: true}, "root");
       } else {
         BackButton.hide();
 
       }
 
       BackButton.onClick(function() {
-        if (window.history.length > 1) {
+        if (!history.state.root) {
+          BackButton.show();
           window.history.back();
         } else {
-          WebApp.close();
+          BackButton.hide();
         }
       });
 
+      function setupHistoryTracking() {
+        const original = history['pushState'];
+        history['pushState'] = function(...args) {
+          original.apply(this, args);
+          BackButton.show();
+        };
+
+      }
+
+      setupHistoryTracking();
+
       window.addEventListener('popstate', function() {
-        if (window.history.length > 1) {
+        if (!history.state.root) {
           BackButton.show();
         } else {
           BackButton.hide();
