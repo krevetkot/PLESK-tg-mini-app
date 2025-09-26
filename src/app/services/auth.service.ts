@@ -17,23 +17,25 @@ export class AuthService {
   authStatus$ = this.authStatus.asObservable();
 
   isAuthenticated(): boolean {
-    return !!localStorage.getItem(this.AUTH_KEY);
+    console.log(localStorage.getItem(this.AUTH_KEY));
+    if (localStorage.getItem(this.AUTH_KEY) === 'false' || localStorage.getItem(this.AUTH_KEY) === null){
+      return false;
+    } else {
+      return true;
+    }
   }
 
   authenticate(): Promise<boolean> {
-    // Если промис уже создан, возвращаем его
-    if (this.authPromise) {
-      return this.authPromise;
-    }
-
     // Если уже аутентифицированы, сразу возвращаем успех
     if (this.isAuthenticated()) {
+      console.log("leave");
       return Promise.resolve(true);
     }
 
     // Создаем новый промис для аутентификации
     this.authPromise = new Promise<boolean>((resolve, reject) => {
       // Получаем данные initData
+      console.log("fetch");
       const initData = this.telegramService.initData;
 
       // Передаем initData на сервер
@@ -46,12 +48,13 @@ export class AuthService {
       }).then(response => response.json()).then(data => {
         console.log("Ответ от сервера:"+ data.text);
         if (data.status === "success"){
-          localStorage.setItem(this.AUTH_KEY, 'false');
+          localStorage.setItem(this.AUTH_KEY, 'true');
           this.authStatus.next(true);
           resolve(true);
         } else {
+          localStorage.setItem(this.AUTH_KEY, 'false');
           this.authStatus.next(false);
-          resolve(false);
+          reject(false);
         }
       }).catch(error => {
         console.log("Ответ от сервера:"+ error);
