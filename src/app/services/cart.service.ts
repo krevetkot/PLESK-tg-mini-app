@@ -1,5 +1,5 @@
-import { Injectable } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
+import {Injectable} from '@angular/core';
+import {BehaviorSubject} from 'rxjs';
 import {OrderItem} from '../models/order-item';
 import {Product} from '../models/product';
 
@@ -117,9 +117,10 @@ export class CartService {
     try {
       const savedCart = localStorage.getItem('cart');
       if (savedCart) {
-        this.orderItems = JSON.parse(savedCart);
-        this.cartSubject.next([...this.orderItems]);
+        this.orderItems = JSON.parse(savedCart).filter((item: OrderItem) => item.price !== undefined);
+        this.saveCart();
         console.log('Корзина загружена:', this.orderItems);
+
       }
     } catch (error) {
       console.error('Ошибка загрузки корзины:', error);
