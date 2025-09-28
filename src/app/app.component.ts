@@ -21,7 +21,7 @@ export class AppComponent implements OnInit {
 
   async performAuth(): Promise<void> {
     try {
-      await this.authService.authenticate();
+      await this.authService.checkAndRefreshAuth();
       console.log("auth is done");
     } catch (error) {
       console.error('Ошибка аутентификации:', error);

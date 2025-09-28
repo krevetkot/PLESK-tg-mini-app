@@ -4,6 +4,7 @@ import {catchError, map, Observable, of, throwError} from 'rxjs';
 import {HttpClient} from '@angular/common/http';
 import {environment} from '../../environments/environment';
 import {Response} from '../models/response';
+import {AuthService} from './auth.service';
 
 @Injectable({
   providedIn: 'root'
@@ -12,9 +13,9 @@ export class ProductService {
   private apiUrl: string = environment.apiUrl;
   private http = inject(HttpClient);
   private foo: string = environment.foo;
-  private readonly AUTH_KEY = 'tg_app_authenticated';
+  private readonly AUTH_COOKIE_NAME = 'tg_app_authenticated';
 
-  constructor() {}
+  constructor(private authService: AuthService) {}
 
   getProducts(): Observable<Product[]> {
     return this.http.get<Response>(this.apiUrl + 'catalog').pipe(
@@ -29,7 +30,8 @@ export class ProductService {
             file: item.file ? `${environment.photosUrl}${item.file}` : this.foo
           }));
         }
-        localStorage.setItem(this.AUTH_KEY, 'false');
+        this.authService.deleteCookie(this.AUTH_COOKIE_NAME);
+        this.authService.refreshAuthentication();
         throw new Error('API returned error status');
       }),
       catchError(error => {
@@ -45,7 +47,6 @@ export class ProductService {
         if (response.status === 'success') {
           return response.items.map(item => item.categoryName);
         }
-        localStorage.setItem(this.AUTH_KEY, 'false');
         throw new Error('API returned error status');
       }),
       catchError(error => {
