@@ -1,5 +1,5 @@
 import {inject, Injectable} from '@angular/core';
-import { Product } from '../models/product';
+import {Product} from '../models/product';
 import {catchError, map, Observable, of, throwError} from 'rxjs';
 import {HttpClient} from '@angular/common/http';
 import {environment} from '../../environments/environment';
@@ -15,7 +15,8 @@ export class ProductService {
   private foo: string = environment.foo;
   private readonly AUTH_COOKIE_NAME = 'tg_app_authenticated';
 
-  constructor(private authService: AuthService) {}
+  constructor(private authService: AuthService) {
+  }
 
   getProducts(): Observable<Product[]> {
     return this.http.get<Response>(this.apiUrl + 'catalog').pipe(
@@ -31,7 +32,7 @@ export class ProductService {
           }));
         }
         this.authService.deleteCookie(this.AUTH_COOKIE_NAME);
-        this.authService.refreshAuthentication();
+        this.authService.refreshAuthentication().then(r => console.log(r));
         throw new Error('API returned error status');
       }),
       catchError(error => {
@@ -41,7 +42,7 @@ export class ProductService {
     );
   }
 
-  getCategories(): Observable<string[]>{
+  getCategories(): Observable<string[]> {
     return this.http.get<Response>(this.apiUrl + 'categories').pipe(
       map(response => {
         if (response.status === 'success') {

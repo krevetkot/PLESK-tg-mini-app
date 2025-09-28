@@ -1,9 +1,9 @@
-import {Component, HostListener, inject, OnInit} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {Product} from '../../models/product';
 import {ProductService} from '../../services/product.service';
 import {CommonModule} from '@angular/common';
 import {FormsModule} from '@angular/forms';
-import { Router } from '@angular/router';
+import {Router} from '@angular/router';
 import {AuthService} from '../../services/auth.service';
 import {Subscription} from 'rxjs';
 
@@ -14,7 +14,7 @@ import {Subscription} from 'rxjs';
   templateUrl: './shop.component.html',
   styleUrl: './shop.component.css'
 })
-export class ShopComponent implements OnInit{
+export class ShopComponent implements OnInit {
   products: Product[] = [];
   filteredProducts: Product[] = [];
   loading = true;
@@ -29,7 +29,8 @@ export class ShopComponent implements OnInit{
 
   constructor(private productService: ProductService,
               private router: Router,
-              private authService: AuthService) {}
+              private authService: AuthService) {
+  }
 
   ngOnInit(): void {
     // подписываемся на состояние аутентификации
