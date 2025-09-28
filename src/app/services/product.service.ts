@@ -12,6 +12,7 @@ export class ProductService {
   private apiUrl: string = environment.apiUrl;
   private http = inject(HttpClient);
   private foo: string = environment.foo;
+  private readonly AUTH_KEY = 'tg_app_authenticated';
 
   constructor() {}
 
@@ -28,6 +29,7 @@ export class ProductService {
             file: item.file ? `${environment.photosUrl}${item.file}` : this.foo
           }));
         }
+        localStorage.setItem(this.AUTH_KEY, 'false');
         throw new Error('API returned error status');
       }),
       catchError(error => {
@@ -43,6 +45,7 @@ export class ProductService {
         if (response.status === 'success') {
           return response.items.map(item => item.categoryName);
         }
+        localStorage.setItem(this.AUTH_KEY, 'false');
         throw new Error('API returned error status');
       }),
       catchError(error => {
