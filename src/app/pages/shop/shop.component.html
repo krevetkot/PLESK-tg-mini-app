@@ -25,15 +25,17 @@
 
 <!-- Кнопки фильтрации -->
 <div class="filters-container" [class.sticky]="isSticky">
-  <div class="filters">
-    <button
-      *ngFor="let category of categories"
-      (click)="filterByCategory(category)"
-      [class.active]="selectedCategory === category"
-      class="filter-btn"
-    >
-      {{ category }}
-    </button>
+  <div class="filters-scroll-container">
+    <div class="filters">
+      <button
+        *ngFor="let category of categories"
+        (click)="filterByCategory(category)"
+        [class.active]="selectedCategory === category"
+        class="filter-btn"
+      >
+        {{ category }}
+      </button>
+    </div>
   </div>
 </div>
 

@@ -11,15 +11,7 @@
   transition: all 0.3s ease;
   z-index: 1001;
   width: 100%;
-}
-
-.search-header {
-  /*position: fixed;*/
-  top: 0;
-  left: 0;
-  right: 0;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-  padding: 10px 0;
 }
 
 .search-container {
@@ -84,28 +76,49 @@
 /* Кнопки фильтрации */
 .filters-container {
   background: white;
-  padding: 15px 0;
+  padding: 15px 0 15px 0;
   border-bottom: 1px solid #e0e0e0;
   z-index: 1000;
   width: 100%;
+  height: fit-content;
 }
 
-.filters-container {
-  /*position: fixed;*/
-  top: 60px; /* Высота поисковой строки */
-  left: 0;
-  right: 0;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+.filters-scroll-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px 15px 0;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: auto;
+  scrollbar-color: #c1c1c1 #f0f0f0;
+}
+
+/* Стилизация скроллбара для WebKit */
+.filters-scroll-container::-webkit-scrollbar {
+  height: 12px;
+  margin-top: 10px;
+}
+
+.filters-scroll-container::-webkit-scrollbar-track {
+  background: #f0f0f0;
+  border-radius: 6px;
+}
+
+.filters-scroll-container::-webkit-scrollbar-thumb {
+  background: #c1c1c1;
+  border-radius: 6px;
+}
+
+.filters-scroll-container::-webkit-scrollbar-thumb:hover {
+  background: #a8a8a8;
 }
 
 .filters {
   display: flex;
-  justify-content: center;
   gap: 10px;
-  flex-wrap: wrap;
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 0 20px;
+  padding: 0 0;
+  width: max-content;
+  margin-bottom: 15px;
 }
 
 .filter-btn {
@@ -117,6 +130,8 @@
   font-size: 14px;
   cursor: pointer;
   transition: all 0.3s ease;
+  white-space: nowrap;
+  flex-shrink: 0;
 }
 
 .filter-btn:hover {
@@ -221,7 +236,7 @@
   padding: 15px;
   flex: 1;
   display: grid;
-  grid-template-rows: 1fr auto; /* изображение, название, цена */
+  grid-template-rows: 1fr auto;
 }
 
 .product-name {
@@ -297,15 +312,22 @@
     padding: 120px 15px 15px;
   }
 
-  .filters {
-    justify-content: flex-start;
-    overflow-x: auto;
+  .filters-scroll-container {
     padding: 0 15px;
-    -webkit-overflow-scrolling: touch;
+  }
+
+  .filters {
+    gap: 8px;
+    padding: 0 15px;
   }
 
   .filters-container {
     top: 50px;
+  }
+
+
+  .filters-scroll-container::-webkit-scrollbar {
+    height: 6px;
   }
 
   .products-header {
@@ -339,7 +361,7 @@
   }
 
   .products-container {
-    padding: 110px 10px 10px;
+    padding: 20px 10px 10px;
   }
 
   .filter-btn {
