@@ -131,10 +131,10 @@
   user-select: none;
 }
 
-.add-to-cart-1-item-btn, .go-to-cart-button {
+.add-to-cart-1-item-btn {
   background: #0056b3;
   color: white;
-  /*width: 50%;*/
+  width: 50%;
 }
 
 .go-to-cart-button {
@@ -152,6 +152,7 @@
 .add-to-cart-1-box-btn {
   background: #5682b2;
   color: white;
+  width: 50%;
 }
 
 .add-to-cart-1-box-btn:hover:not(:disabled) {
@@ -248,20 +249,9 @@
   }
 }
 
-/* Когда есть обе кнопки - делим пополам */
-.add-btns-container:has(.add-to-cart-1-box-btn) .quantity-controls {
-  width: 50%;
-}
-
-/* Когда нет кнопки коробки - расширяем на 90% */
-.add-btns-container:not(:has(.add-to-cart-1-box-btn)) .quantity-controls {
-  width: 90%;
-}
-
-
 /* Стили для управления количеством */
 .quantity-controls {
-  /*width: 90%;*/
+  width: 90%;
   display: flex;
   align-items: center;
   gap: 15px;

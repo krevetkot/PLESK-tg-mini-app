@@ -38,6 +38,30 @@
     </div>
     <p class="product-description">{{product.description}}</p>
 
+    <div class="specs-container">
+      <h3 class="specs-title">Характеристики</h3>
+      <table class="item-info-table">
+        <tbody>
+        <tr>
+          <td class="left-column">Страна производитель:</td>
+          <td class="right-column">{{product.madeIn}}</td>
+        </tr>
+        <tr>
+          <td class="left-column">В наличии:</td>
+          <td class="right-column">{{product.count >= 1000 ? 'Много' : product.count + ' шт.'}}</td>
+        </tr>
+        <tr [hidden]="product.countInPack === 0">
+          <td class="left-column">Количество в коробке:</td>
+          <td class="right-column">{{product.countInPack}} шт.</td>
+        </tr>
+        <tr>
+          <td class="left-column">Артикул:</td>
+          <td class="right-column">{{product.article}}</td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+
       <div class="add-btns-container">
         <!-- Левая кнопка (1 шт) -->
         @if (addedQuantity === 0) {
