@@ -25,7 +25,7 @@ export class ShopComponent implements OnInit {
 
   categories: string[] = [];
   selectedCategory: string = 'Все';
-  selectedSort: string = 'name';
+  selectedSort: string = 'popularity';
 
   constructor(private productService: ProductService,
               private router: Router,
@@ -116,6 +116,9 @@ export class ShopComponent implements OnInit {
         break;
       case 'price-desc':
         this.filteredProducts.sort((a, b) => b.price - a.price);
+        break;
+      case 'popularity':
+        this.filteredProducts.sort((a, b) => b.popularity - a.popularity);
         break;
     }
   }

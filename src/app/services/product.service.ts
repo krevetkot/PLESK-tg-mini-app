@@ -3,7 +3,6 @@ import {Product} from '../models/product';
 import {catchError, map, Observable, of, throwError} from 'rxjs';
 import {HttpClient} from '@angular/common/http';
 import {environment} from '../../environments/environment';
-import {Response} from '../models/response';
 import {AuthService} from './auth.service';
 
 @Injectable({
@@ -19,7 +18,7 @@ export class ProductService {
   }
 
   getProducts(): Observable<Product[]> {
-    return this.http.get<Response>(this.apiUrl + 'catalog').pipe(
+    return this.http.get<CatalogResponse>(this.apiUrl + 'catalog').pipe(
       map(response => {
         if (response.status === 'success') {
           return response.items.map(item => ({
@@ -28,8 +27,9 @@ export class ProductService {
             categoryName: item.categoryName,
             categoryGUID: item.categoryGUID,
             price: Number(item.price),
-            file: item.file ? `${environment.photosUrl}${item.file}` : this.foo
-          }));
+            file: item.file ? `${environment.photosUrl}${item.file}` : this.foo,
+            popularity: item.popularity
+          } as Product));
         }
         this.authService.deleteCookie(this.AUTH_COOKIE_NAME);
         this.authService.refreshAuthentication().then(r => console.log(r));
@@ -43,7 +43,7 @@ export class ProductService {
   }
 
   getCategories(): Observable<string[]> {
-    return this.http.get<Response>(this.apiUrl + 'categories').pipe(
+    return this.http.get<CategoriesResponse>(this.apiUrl + 'categories').pipe(
       map(response => {
         if (response.status === 'success') {
           return response.items.map(item => item.categoryName);
@@ -58,7 +58,7 @@ export class ProductService {
   }
 
   getProduct(guid: string): Observable<Product> {
-    return this.http.get<Response>(`${this.apiUrl}catalog?productGUID=${guid}`).pipe(
+    return this.http.get<ItemResponse>(`${this.apiUrl}catalog?productGUID=${guid}`).pipe(
       map(response => {
         if (response.status === 'success' && response.items.length > 0) {
           const apiProduct = response.items[0];
@@ -80,7 +80,8 @@ export class ProductService {
             price: Number(apiProduct.price),
             description: apiProduct.description || undefined,
             imageUrl: imgUrls,
-            file: imgUrls[0] ? imgUrls[0] : this.foo
+            file: imgUrls[0] ? imgUrls[0] : this.foo,
+            popularity: 0
           };
         }
         throw new Error('Product not found');
@@ -91,4 +92,37 @@ export class ProductService {
       })
     );
   }
+}
+
+
+export interface CatalogResponse {
+  status: string;
+  items: { GUID: string;
+        name: string;
+        categoryName: string;
+        categoryGUID: string;
+        price: number;
+        file: string;
+        popularity: number; }[];
+  photos: { [photoId: string]: string };
+  token: string;
+}
+
+export interface ItemResponse {
+  status: string;
+  items: { GUID: string;
+    name: string;
+    categoryName: string;
+    categoryGUID: string;
+    price: number;
+    description: string;
+    imgUrl: string[];
+    file: string; }[]
+  photos: { [photoId: string]: string };
+  token: string;
+}
+
+export interface CategoriesResponse {
+  status: string;
+  items: {categoryName: string; categoryGUID: string}[]
 }

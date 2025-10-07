@@ -45,6 +45,7 @@
     <h2 class="products-title">Все товары</h2>
     <div class="sort-container">
       <select [(ngModel)]="selectedSort" (change)="sortProducts()" class="sort-select">
+        <option value="popularity">По популярности</option>
         <option value="name">По алфавиту</option>
         <option value="price-asc">По возрастанию цены</option>
         <option value="price-desc">По убыванию цены</option>
