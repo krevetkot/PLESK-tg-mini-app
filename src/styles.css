@@ -2,3 +2,7 @@ body {
   background: #ffffff;
   color: #ffffff;
 }
+
+html, body {
+  font-family: 'Inter', sans-serif;
+}

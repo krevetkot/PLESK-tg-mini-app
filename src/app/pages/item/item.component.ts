@@ -65,7 +65,7 @@ export class ItemComponent implements OnInit, OnDestroy {
   private initializeCarousel(): void {
     if (this.product && this.product.imageUrl) {
       this.productImages = this.product.imageUrl;
-      this.currentImage = this.productImages[0] || environment.foo;
+      this.currentImage = this.productImages[this.currentImageIndex] || environment.foo;
     }
   }
 
