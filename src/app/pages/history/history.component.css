@@ -82,9 +82,11 @@
   letter-spacing: 0.5px;
 }
 
-.status-1 { background: #e3f2fd; color: #1976d2; } /* В работе */
-.status-2 { background: #e8f5e8; color: #2e7d32; } /* Отгружен */
-.status-3 { background: #616161; color: #ffffff; } /* Отменен */
+.status-1 { background: #e3f2fd; color: #1565c0;} /* В обработке */
+.status-2 { background: #ffebee; color: #c62828;} /* Отменен */
+.status-3 { background: #e8eaf6; color: #283593;} /* Оформлен */
+.status-4 { background: #fff3e0; color: #ef6c00;} /* В пути */
+.status-5 { background: #e8f5e8; color: #2e7d32;} /* Доставлен */
 
 .order-items {
   margin-bottom: 16px;

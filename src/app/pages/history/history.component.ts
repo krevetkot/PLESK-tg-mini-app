@@ -40,11 +40,15 @@ export class HistoryComponent implements OnInit {
     if (status) {
       switch (status) {
         case 1:
-          return 'В работе';
+          return 'В обработке';
         case 2:
-          return 'Отгружен';
-        case 3:
           return 'Отменен';
+        case 3:
+          return 'Оформлен';
+        case 4:
+          return 'В пути';
+        case 5:
+          return 'Доставлен';
         default:
           return 'Неизвестен';
       }
