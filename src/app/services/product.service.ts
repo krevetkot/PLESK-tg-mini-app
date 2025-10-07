@@ -81,7 +81,11 @@ export class ProductService {
             description: apiProduct.description || undefined,
             imageUrl: imgUrls,
             file: imgUrls[0] ? imgUrls[0] : this.foo,
-            popularity: 0
+            popularity: 0,
+            article: apiProduct.article,
+            count: apiProduct.count,
+            countInPack: apiProduct.countInPack,
+            madeIn: apiProduct.madeIn
           };
         }
         throw new Error('Product not found');
@@ -117,7 +121,11 @@ export interface ItemResponse {
     price: number;
     description: string;
     imgUrl: string[];
-    file: string; }[]
+    file: string;
+    article: string;
+    count: number;
+    countInPack: number;
+    madeIn: string;}[]
   photos: { [photoId: string]: string };
   token: string;
 }

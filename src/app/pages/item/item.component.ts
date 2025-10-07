@@ -16,7 +16,7 @@ import {environment} from '../../../environments/environment';
   styleUrl: './item.component.css'
 })
 export class ItemComponent implements OnInit, OnDestroy {
-  public product: Product | null = null; // Инициализируем null
+  public product!: Product;
   productImages: string[] = []; // Инициализируем пустым массивом
   currentImageIndex: number = 0;
   currentImage: string = '';
@@ -139,11 +139,9 @@ export class ItemComponent implements OnInit, OnDestroy {
 
   // Добавить товар в корзину
   addToCart(quantity: number): void {
-    if (this.product) {
-      this.cartService.addToCart(this.product, quantity);
-      this.addedQuantity = this.cartService.getItemQuantity(this.product.GUID);
-      this.buttonType = 'quantity';
-    }
+    this.cartService.addToCart(this.product, quantity);
+    this.addedQuantity = this.cartService.getItemQuantity(this.product.GUID);
+    this.buttonType = 'quantity';
   }
 
   // Увеличить количество

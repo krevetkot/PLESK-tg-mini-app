@@ -32,29 +32,37 @@
 
 
   <div class="product-info">
-    <h2 class="product-name">{{ product?.name }}</h2>
+    <h2 class="product-name">{{ product.name }}</h2>
     <div class="product-price">
-      {{ product?.price }} ₽
+      {{ product.price }} ₽
     </div>
-    <p class="product-description">{{product?.description}}</p>
+    <p class="product-description">{{product.description}}</p>
 
-    <div class="add-btns-container">
-      @if (addedQuantity === 0) {
-      <button class="add-to-cart-1-item-btn" (click)="addToCart(1)">
-      Добавить 1 шт.
-      </button>
-      } @else {
-      <div class="quantity-controls">
-        <button class="quantity-btn minus" (click)="decreaseQuantity()">
-          −
+      <div class="add-btns-container">
+        <!-- Левая кнопка (1 шт) -->
+        @if (addedQuantity === 0) {
+        <button class="add-to-cart-1-item-btn" (click)="addToCart(1)" [disabled]="product.count === 0">
+        {{ product.count === 0 ? 'Нет в наличии' : 'Добавить 1 шт.' }}
         </button>
-        <span class="quantity-display">{{ addedQuantity }} шт.</span>
-          <button class="quantity-btn plus" (click)="increaseQuantity()">
-            +
+        } @else {
+        <div class="quantity-controls">
+          <button class="quantity-btn minus" (click)="decreaseQuantity()">
+            −
           </button>
-       </div>
-      }
-    </div>
+          <span class="quantity-display">{{ addedQuantity }} шт.</span>
+            <button class="quantity-btn plus" (click)="increaseQuantity()"
+                    [disabled]="addedQuantity >= product.count">
+              +
+            </button>
+          </div>
+        }
+
+        <!-- Правая кнопка (1 кор) -->
+        <button class="add-to-cart-1-box-btn" (click)="addToCart(product.countInPack)" [disabled]="product.count === 0" [hidden]="product.countInPack === 0">
+          {{ product.count === 0 ? 'Нет в наличии' : 'Добавить 1 кор.' }}
+        </button>
+      </div>
+
     <div>
       @if (addedQuantity !== 0) {
         <button class="go-to-cart-button" (click)="navigateToCart()">
