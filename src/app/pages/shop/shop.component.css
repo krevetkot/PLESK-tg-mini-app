@@ -264,7 +264,7 @@
   color: #007bff;
   margin: auto 0 15px 0;
   height: 50%;
-  align-content: center; /* Вертикально по центру */
+  align-content: center;     /* Вертикально по центру */
   justify-content: start;
 }
 
@@ -285,12 +285,8 @@
 }
 
 @keyframes spin {
-  0% {
-    transform: rotate(0deg);
-  }
-  100% {
-    transform: rotate(360deg);
-  }
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
 }
 
 /* Сообщение об отсутствии товаров */
@@ -303,16 +299,6 @@
 .no-products h3 {
   margin: 0 0 10px 0;
   color: #333;
-}
-
-@media (max-width: 968px) {
-  .product-name {
-    font-size: 18px;
-  }
-
-  .product-price {
-    font-size: 22px;
-  }
 }
 
 /* Адаптивность */

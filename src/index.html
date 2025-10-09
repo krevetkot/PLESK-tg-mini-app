@@ -9,7 +9,6 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap&subset=cyrillic" rel="stylesheet">
   <script defer src="https://telegram.org/js/telegram-web-app.js?59"></script>
   <script>
-    // WebApp.requestFullscreen();
     document.addEventListener('DOMContentLoaded', function() {
       const WebApp = Telegram.WebApp;
       const BackButton = WebApp.BackButton;
@@ -48,6 +47,8 @@
           BackButton.hide();
         }
       });
+
+      WebApp.requestFullscreen();
     });
   </script>
 </head>
