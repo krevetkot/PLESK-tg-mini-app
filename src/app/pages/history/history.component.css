@@ -7,7 +7,7 @@
 }
 
 .orders-section h2 {
-  color: #333;
+  color: white;
   margin-bottom: 24px;
   font-size: 28px;
   font-weight: 600;
@@ -16,7 +16,7 @@
 .no-orders {
   text-align: center;
   padding: 60px 20px;
-  color: #666;
+  color: white;
   font-size: 18px;
 }
 

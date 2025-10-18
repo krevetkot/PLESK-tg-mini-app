@@ -5,7 +5,7 @@
 }
 
 .main-header {
-  background: #ffffff;
+  background: #565656;
   padding: 15px 0;
   position: sticky;
   top: 0;
@@ -31,8 +31,9 @@
 }
 
 .logo-img {
-  width: 40px;
-  height: 40px;
+  width: 194px;
+  height: 80px;
+  top: 45px;
   object-fit: contain;
 }
 

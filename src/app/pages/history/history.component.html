@@ -52,14 +52,14 @@
         </div>
         <div class="item-details">
           <span class="item-name">{{ item.name }}</span>
-                    <span class="item-price">{{ item.price }} ₽/шт</span>
+                    <span class="item-price">{{ item.price }} р./шт</span>
                   </div>
                 </div>
                 <div class="item-quantity">
                   <span class="quantity-badge">{{ item.count }} шт</span>
                 </div>
                 <div class="item-total">
-        {{ (item.price * item.count) }} ₽
+        {{ (item.price * item.count) }} р.
                 </div>
               </div>
         }
@@ -70,7 +70,7 @@
 
       <div class="order-footer">
         <div class="order-total">
-          <strong>Итого: {{ order.total }} ₽</strong>
+          <strong>Итого: {{ order.total }} р.</strong>
         </div>
       </div>
     </div>

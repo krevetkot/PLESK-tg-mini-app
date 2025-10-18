@@ -2,12 +2,8 @@
   <!-- Пустая корзина -->
   @if (isEmpty) {
   <div class="empty-cart">
-    <div class="cart-icon">🛒</div>
-    <h2>Корзина пуста</h2>
-    <p>Добавьте товары для оформления заказа</p>
-    <button class="continue-shopping-btn" (click)="continueShopping()">
-      Вернуться к покупкам
-    </button>
+    <img src="sad_mascot.png">
+    <h2>В корзине пока пусто</h2>
   </div>
   }
 
@@ -25,41 +21,40 @@
 
     <div class="item-details">
       <h3 class="item-name">{{ item.name }}</h3>
-      <p class="item-price">{{ item.price }} ₽/шт</p>
+      <p class="item-price">{{ item.price }} р./шт</p>
+
+      <button class="remove-btn" (click)="removeItem(item.GUID)">×</button>
+
+      <div class="quantity-controls">
+        <button
+          class="quantity-btn minus"
+          (click)="decreaseQuantity(item)"
+          [disabled]="item.count <= 1"
+        >
+          −
+        </button>
+
+        <input
+          type="number"
+          [value]="item.count"
+          (change)="updateQuantity(item, $event)"
+          min="1"
+          class="quantity-input"
+        >
+
+        <button
+          class="quantity-btn plus"
+          (click)="increaseQuantity(item)"
+        >
+          +
+        </button>
+      </div>
+
+      <div class="item-total">
+        <span class="total-price">Итого: {{ (item.price * item.count) }} р.</span>
+      </div>
     </div>
 
-    <div class="quantity-controls">
-      <button
-        class="quantity-btn minus"
-        (click)="decreaseQuantity(item)"
-        [disabled]="item.count <= 1"
-      >
-        −
-      </button>
-
-      <input
-        type="number"
-        [value]="item.count"
-        (change)="updateQuantity(item, $event)"
-        min="1"
-        class="quantity-input"
-      >
-
-      <button
-        class="quantity-btn plus"
-        (click)="increaseQuantity(item)"
-      >
-        +
-      </button>
-    </div>
-
-    <div class="item-total">
-      <span class="total-price">{{ (item.price * item.count) }} ₽</span>
-    </div>
-
-    <button class="remove-btn" (click)="removeItem(item.GUID)">
-      ×
-    </button>
   </div>
   }
   </div>
@@ -91,8 +86,8 @@
 
     <div class="order-summary">
       <div class="total-line">
-        <span class="total-label"> Итого:</span>
-        <span class="total-amount"> {{ totalAmount }} ₽</span>
+        <span class="total-label"> Сумма заказа:</span>
+        <span class="total-amount">{{ totalAmount }} p.</span>
           </div>
         </div>
       </div>
