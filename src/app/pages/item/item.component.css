@@ -8,6 +8,8 @@
   gap: 40px;
   min-height: calc(100vh - 80px);
   align-items: start;
+  background: white;
+  border-radius: 20px;
 }
 
 /* Контейнер изображения */
