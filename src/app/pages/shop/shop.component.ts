@@ -67,16 +67,6 @@ export class ShopComponent implements OnInit {
         this.loading = false;
       }
     });
-
-    this.productService.getCategories().subscribe({
-      next: (categories) => {
-        this.categories = categories;
-      },
-      error: (error) => {
-        console.error('Ошибка загрузки товаров:', error);
-        this.loading = false;
-      }
-    });
   }
 
   loadCategories(): void {
