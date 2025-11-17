@@ -51,6 +51,7 @@
   margin-bottom: 16px;
   padding-bottom: 16px;
   border-bottom: 1px solid #f0f0f0;
+  padding-right: 120px;
 }
 
 .order-info {
@@ -163,6 +164,11 @@
   .order-total {
     font-size: 16px;
   }
+
+  .order-arrow {
+    right: 20px;
+    top:25%;
+  }
 }
 
 @media (max-width: 480px) {
@@ -173,11 +179,15 @@
   .order-card {
     padding: 12px;
   }
+
+  .repeat-order-btn {
+    font-size: 11px;
+  }
 }
 
 
 .order-card {
-  cursor: pointer;
+  cursor: default;
   transition: all 0.3s ease;
   position: relative;
 }
@@ -197,7 +207,11 @@
   top: 50%;
   transform: translateY(-50%);
   transition: transform 0.3s ease;
+  cursor: pointer;
+  padding: 8px;
+  margin-right: 40px;
 }
+
 
 .arrow {
   display: block;
@@ -399,8 +413,47 @@
   .quantity-badge {
     display: inline-block;
   }
+
+  .repeat-order-btn {
+    width: 100%;
+    text-align: center;
+  }
+
+  .order-arrow {
+    margin-right: 0;
+    right: 10px;
+  }
 }
 
 .retry-btn {
   pointer-events: auto;
 }
+
+.order-actions {
+  display: flex;
+  align-items: center;
+}
+
+.repeat-order-btn {
+  background: #565656;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  white-space: nowrap;
+}
+
+.repeat-order-btn:hover {
+  background: #565656;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px #383838;
+}
+
+.repeat-order-btn:active {
+  transform: translateY(0);
+}
+

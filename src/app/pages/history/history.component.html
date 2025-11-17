@@ -11,18 +11,18 @@
     } @else {
     <div class="orders-list">
       @for (order of orders; track order.id) {
-    <div class="order-card" (click)="toggleOrderDetails(order.id)">
+    <div class="order-card">
       <div class="order-header">
         <div class="order-info">
           <h3 class="order-number">Заказ №{{ order.id }}</h3>
           <span class="order-date">от {{ order.ordered | date:'dd.MM.yy'}}</span>
         </div>
         <div class="order-status">
-              <span class="status-badge status-{{order.status_id}}">
-                {{ getStatusText(order.status_id) }}
-              </span>
+            <span class="status-badge status-{{order.status_id}}">
+              {{ getStatusText(order.status_id) }}
+            </span>
         </div>
-        <div class="order-arrow">
+        <div class="order-arrow" (click)="toggleOrderDetails(order.id); $event.stopPropagation()">
           <i class="arrow" [class.arrow-down]="isOrderExpanded(order.id)"></i>
         </div>
       </div>
@@ -31,8 +31,8 @@
       @if (isOrderExpanded(order.id)) {
       <div class="order-details">
 
-      <!-- Список товаров -->
-      @if (order.items && order.items.length > 0) {
+        <!-- Список товаров -->
+        @if (order.items && order.items.length > 0) {
       <div class="order-items">
         <div class="items-header">
           <span>Товары</span>
@@ -52,20 +52,30 @@
         </div>
         <div class="item-details">
           <span class="item-name">{{ item.name }}</span>
-                    <span class="item-price">{{ item.price }} р./шт</span>
-                  </div>
-                </div>
-                <div class="item-quantity">
-                  <span class="quantity-badge">{{ item.count }} шт</span>
-                </div>
-                <div class="item-total">
-        {{ (item.price * item.count) }} р.
+                  <span class="item-price">{{ item.price }} р./шт</span>
                 </div>
               </div>
+              <div class="item-quantity">
+                <span class="quantity-badge">{{ item.count }} шт</span>
+              </div>
+              <div class="item-total">
+        {{ (item.price * item.count) }} р.
+              </div>
+            </div>
         }
       </div>
       }
-      </div>
+
+      <!-- Кнопка повторить заказ в раскрытом блоке -->
+      <div class="repeat-order-section">
+        <button
+          class="repeat-order-btn"
+          (click)="repeatOrder(order); $event.stopPropagation()">
+      Повторить заказ
+    </button>
+  </div>
+
+</div>
       }
 
       <div class="order-footer">
