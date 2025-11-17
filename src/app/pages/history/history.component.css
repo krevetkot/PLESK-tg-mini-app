@@ -137,6 +137,14 @@
   color: #333;
 }
 
+@media (min-width: 769px) {
+  .order-arrow {
+    right: 20px;
+    top: 25%!important;
+    margin-right: 0!important;
+  }
+}
+
 /* Адаптивность */
 @media (max-width: 768px) {
   .profile-page-container {
@@ -167,7 +175,8 @@
 
   .order-arrow {
     right: 20px;
-    top:25%;
+    top: 25%!important;
+    margin-right: 0!important;
   }
 }
 
