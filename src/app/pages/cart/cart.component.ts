@@ -112,7 +112,7 @@ export class CartComponent implements OnInit {
 
   handleCheckoutClick(): void {
     if (this.totalAmount < 3500) {
-      alert('Минимальный заказ для оформления 3 500 р.');
+      alert('Минимальный заказ для оформления 3500 р.');
       return;
     }
 
