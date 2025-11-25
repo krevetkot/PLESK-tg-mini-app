@@ -110,6 +110,15 @@ export class CartComponent implements OnInit {
       }
   }
 
+  handleCheckoutClick(): void {
+    if (this.totalAmount < 3500) {
+      alert('Минимальный заказ для оформления 3 500 р.');
+      return;
+    }
+
+    this.checkout();
+  }
+
   getShippingMinDate(): string {
     const tomorrow = new Date();
     tomorrow.setDate(tomorrow.getDate() + 1);
