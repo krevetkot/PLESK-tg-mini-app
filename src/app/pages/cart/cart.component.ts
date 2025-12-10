@@ -75,6 +75,36 @@ export class CartComponent implements OnInit {
     return !!this.shippingDate && this.shippingDate.trim() !== '';
   }
 
+  async canMakeOrderToday(): Promise<boolean> {
+    if (this.totalAmount >= 3500) return true;
+
+    const today = new Date();
+    const dateStr = today.toISOString().split('T')[0];
+
+    const response = await fetch(`${environment.apiUrl}orders?dateFrom=${dateStr}`);
+    const data = await response.json();
+
+    console.log("API response:", data);
+    const items = Array.isArray(data.items) ? data.items : [];
+    const hasOrdersToday = items.length > 0;
+
+    console.log("Today's items:", items);
+
+    return hasOrdersToday;
+  }
+
+  async handleCheckoutClick(): Promise<void> {
+    const allowed = await this.canMakeOrderToday();
+    console.log(this.totalAmount, allowed);
+
+    if (!allowed) {
+      alert('Минимальная сумма первого заказа за день — 3500 ₽.');
+      return;
+    }
+
+    this.checkout();
+  }
+
   checkout(): void {
     if (this.orderItems.length == 0) {
       alert('Корзина пуста.');
@@ -110,14 +140,7 @@ export class CartComponent implements OnInit {
       }
   }
 
-  handleCheckoutClick(): void {
-    if (this.totalAmount < 3500) {
-      alert('Минимальный заказ для оформления 3500 р.');
-      return;
-    }
 
-    this.checkout();
-  }
 
   getShippingMinDate(): string {
     const tomorrow = new Date();
