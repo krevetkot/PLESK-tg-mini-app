@@ -13,4 +13,6 @@ export interface Product {
   count: number; // наличие
   countInPack: number;
   madeIn: string;
+
+  documents: { file: string, title: string }[];
 }

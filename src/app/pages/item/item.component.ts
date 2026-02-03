@@ -172,4 +172,14 @@ export class ItemComponent implements OnInit, OnDestroy {
   navigateToCart() {
     this.router.navigate(['/cart']).then(r => console.log("Can't open the cart."));
   }
+
+  getDocumentName(i: number){
+    if (i >= this.product.documents.length) return "";
+    return this.product.documents[i].title;
+  }
+
+  getDocumentHref(i: number){
+    if (i >= this.product.documents.length) return "";
+    return this.product.documents[i].file;
+  }
 }

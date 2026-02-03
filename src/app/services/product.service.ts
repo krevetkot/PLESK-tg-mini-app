@@ -27,7 +27,7 @@ export class ProductService {
             categoryName: item.categoryName,
             categoryGUID: item.categoryGUID,
             price: Number(item.price),
-            file: item.file ? `${environment.photosUrl}${item.file}` : this.foo,
+            file: item.file ? `${environment.getFileUrl}${item.file}` : this.foo,
             popularity: item.popularity
           } as Product));
         }
@@ -68,7 +68,7 @@ export class ProductService {
 
           for (const key of Object.keys(productPhotos)) {
             if (productPhotos) {
-              imgUrls.push(`${environment.photosUrl}${productPhotos[key]}`);
+              imgUrls.push(`${environment.getFileUrl}${productPhotos[key]}`);
             }
           }
 
@@ -85,7 +85,11 @@ export class ProductService {
             article: apiProduct.article,
             count: apiProduct.count,
             countInPack: apiProduct.countInPack,
-            madeIn: apiProduct.madeIn
+            madeIn: apiProduct.madeIn,
+            documents: response.documents.map(doc => ({
+              title: doc.title,
+              file: `${environment.getFileUrl}${doc.file}`
+            }))
           };
         }
         throw new Error('Product not found');
@@ -127,6 +131,7 @@ export interface ItemResponse {
     countInPack: number;
     madeIn: string;}[]
   photos: { [photoId: string]: string };
+  documents: { file: string, title: string }[];
   token: string;
 }
 

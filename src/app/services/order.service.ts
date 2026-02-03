@@ -47,7 +47,7 @@ export class OrderService {
             name: apiItem.name,
             price: Number(apiItem.price),
             count: apiItem.count,
-            file: apiItem.file ? `${environment.photosUrl}${apiItem.file}` : undefined,
+            file: apiItem.file ? `${environment.getFileUrl}${apiItem.file}` : undefined,
             total: Number(apiItem.price) * apiItem.count
           } as OrderItem));
         }
