@@ -21,8 +21,14 @@ export class AppComponent implements OnInit {
 
   async performAuth(): Promise<void> {
     try {
-      await this.authService.checkAndRefreshAuth();
-      console.log("auth is done");
+      const result = await this.authService.authenticate();
+
+      if (result) {
+        console.log("Telegram auth success");
+      } else {
+        console.log("Telegram auth failed → show login form");
+      }
+
     } catch (error) {
       console.error('Ошибка аутентификации:', error);
     }

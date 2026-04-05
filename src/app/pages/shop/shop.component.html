@@ -24,20 +24,22 @@
 </div>
 
 <!-- Кнопки фильтрации -->
-<div class="filters-container" [class.sticky]="isSticky">
-  <div class="filters-scroll-container">
-    <div class="filters">
-      <button
-        *ngFor="let category of categories"
-        (click)="filterByCategory(category)"
-        [class.active]="selectedCategory === category"
-        class="filter-btn"
-      >
-        {{ category }}
-      </button>
+@if (isAuthenticated){
+  <div class="filters-container" [class.sticky]="isSticky">
+    <div class="filters-scroll-container">
+      <div class="filters">
+        <button
+          *ngFor="let category of categories"
+          (click)="filterByCategory(category)"
+          [class.active]="selectedCategory === category"
+          class="filter-btn"
+        >
+          {{ category }}
+        </button>
+      </div>
     </div>
   </div>
-</div>
+}
 
 <div class="products-container">
   <!-- Заголовок и сортировка -->
@@ -65,8 +67,7 @@
   @if (!loading && filteredProducts.length === 0) {
   <div class="no-products">
       @if (!isAuthenticated) {
-        <h3>Пожалуйста, войдите в аккаунт в боте</h3>
-        <p>Если у вас отсутствует логин для входа, обратитесь к администратору</p>
+        <app-login></app-login>
       } @else {
         @if (searchTerm) {
           <h3>Товары не найдены</h3>

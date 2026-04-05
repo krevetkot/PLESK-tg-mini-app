@@ -6,7 +6,7 @@
 /* Фиксированная строка поиска */
 .search-header {
   background: #565656;
-  padding: 15px 0;
+  padding: 17px 0;
   transition: all 0.3s ease;
   z-index: 1000;
   width: 100%;

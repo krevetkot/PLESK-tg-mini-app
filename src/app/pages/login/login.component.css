@@ -1,0 +1,118 @@
+/* Общие */
+* {
+  box-sizing: border-box;
+}
+
+.login-page {
+  min-height: 100vh;
+  width: 100%;
+  background: #565656;
+  display: flex;
+  align-items: flex-start;
+  padding: 0;
+  justify-content: center;
+}
+
+/* Контейнер */
+.login-container {
+  width: 100%;
+  max-width: 420px;
+  text-align: center;
+}
+
+/* Заголовок */
+.login-title {
+  font-size: 26px;
+  font-weight: 600;
+  color: white;
+  margin-bottom: 8px;
+}
+
+/* Подзаголовок */
+.login-subtitle {
+  font-size: 12px;
+  color: #c6c6c6;
+  margin-bottom: 25px;
+}
+
+/* Блок формы */
+.login-box {
+  background: #565656;
+  border: 2px solid white;
+  border-radius: 25px;
+  padding: 25px 20px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+}
+
+/* Input */
+.login-input {
+  width: 100%;
+  padding: 12px 15px;
+  border: 2px solid white;
+  border-radius: 25px;
+  background: #565656;
+  color: white;
+  font-size: 12px;
+  outline: none;
+  transition: all 0.3s ease;
+  margin-bottom: 15px;
+}
+
+.login-input::placeholder {
+  color: #8C8C8C;
+}
+
+.login-input:focus {
+  border-color: #484747;
+  box-shadow: 0 0 0 3px #343434;
+}
+
+/* Кнопка */
+.login-btn {
+  width: 100%;
+  padding: 12px;
+  border-radius: 25px;
+  border: 2px solid white;
+  background: white;
+  color: #565656;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.login-btn:hover {
+  background: #eaeaea;
+}
+
+.login-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* Ошибка */
+.login-error {
+  margin-top: 12px;
+  font-size: 12px;
+  color: #ff6b6b;
+}
+
+/* Адаптив */
+@media (max-width: 768px) {
+  .login-title {
+    font-size: 22px;
+  }
+
+  .login-subtitle {
+    font-size: 11px;
+  }
+
+  .login-box {
+    padding: 20px 15px;
+  }
+
+  .login-input,
+  .login-btn {
+    font-size: 11px;
+  }
+}

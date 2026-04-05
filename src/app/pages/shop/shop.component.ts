@@ -6,11 +6,12 @@ import {FormsModule} from '@angular/forms';
 import {Router} from '@angular/router';
 import {AuthService} from '../../services/auth.service';
 import {Subscription} from 'rxjs';
+import {LoginComponent} from '../login/login.component';
 
 @Component({
   selector: 'app-shop',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, LoginComponent],
   templateUrl: './shop.component.html',
   styleUrl: './shop.component.css'
 })
@@ -41,6 +42,9 @@ export class ShopComponent implements OnInit {
           this.loadProducts();
           this.loadCategories();
         } else {
+          this.loading = false;
+          this.products = [];
+          this.filteredProducts = [];
           this.loading = false;
         }
       }

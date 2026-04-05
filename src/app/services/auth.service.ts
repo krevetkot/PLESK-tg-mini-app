@@ -104,11 +104,11 @@ export class AuthService {
             this.authStatus.next(true);
             resolve(true);
           } else {
-            reject(new Error(`Authentication failed: ${data.message || 'Unknown error'}`));
+            resolve(false);
           }
         })
         .catch(error => {
-          reject(error);
+          resolve(false);
         });
     });
   }
@@ -131,5 +131,52 @@ export class AuthService {
   // Метод для принудительного обновления аутентификации
   refreshAuthentication(): Promise<boolean> {
     return this.authenticate(true);
+  }
+
+  loginFromWebsite(password: string): Promise<boolean> {
+    return new Promise((resolve, reject) => {
+      fetch(`${environment.apiUrl}user`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          initData: {
+            password: password
+          }
+        })
+      })
+        .then(res => res.json())
+        .then(data => {
+          if (data.status === "success") {
+            this.setCookie(this.AUTH_COOKIE_NAME, 'true', this.COOKIE_MAX_AGE);
+            this.authStatus.next(true);
+            resolve(true);
+          } else {
+            reject(new Error(data.message || "Wrong password"));
+          }
+        })
+        .catch(err => reject(err));
+    });
+  }
+
+  logout(): Promise<boolean> {
+    return fetch(`${environment.apiUrl}logout`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      }
+    })
+      .then(() => {
+        this.deleteCookie(this.AUTH_COOKIE_NAME);
+        this.authStatus.next(false);
+        return true;
+      })
+      .catch((err) => {
+        console.error("Logout failed:", err);
+        this.deleteCookie(this.AUTH_COOKIE_NAME);
+        this.authStatus.next(false);
+        return false;
+      });
   }
 }

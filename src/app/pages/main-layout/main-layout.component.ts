@@ -1,6 +1,8 @@
-import { Component } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {BottomNavComponent} from '../bottom-nav/bottom-nav.component';
 import {RouterOutlet} from '@angular/router';
+import {AuthService} from '../../services/auth.service';
+import {Subscription} from 'rxjs';
 
 @Component({
   selector: 'app-main-layout',
@@ -8,6 +10,21 @@ import {RouterOutlet} from '@angular/router';
   templateUrl: './main-layout.component.html',
   styleUrl: './main-layout.component.css'
 })
-export class MainLayoutComponent {
+export class MainLayoutComponent implements OnInit{
+  private authSubscription!: Subscription;
+  isAuthenticated: boolean = false;
+  constructor(public authService: AuthService) {
+  }
 
+  ngOnInit(){
+    this.authSubscription = this.authService.authStatus$.subscribe(
+      authenticated => {
+        this.isAuthenticated = authenticated;
+      }
+    );
+  }
+
+  logout(){
+    this.authService.logout().then(r => console.log("the account was logged out", r));
+  }
 }

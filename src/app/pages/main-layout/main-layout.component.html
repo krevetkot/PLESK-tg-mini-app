@@ -4,6 +4,14 @@
       <div class="logo">
         <img src="logo.png" alt="Логотип" class="logo-img">
       </div>
+
+      @if (isAuthenticated){
+        <div class="header-actions">
+          <button class="header-btn"
+          (click)="logout()">Выйти из аккаунта</button>
+        </div>
+      }
+
     </div>
   </header>
   <div class="content">

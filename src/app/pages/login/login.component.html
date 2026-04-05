@@ -1,0 +1,32 @@
+<div class="login-page">
+  <div class="login-container">
+    <h2 class="login-title">Пожалуйста, войдите в аккаунт</h2>
+    <p class="login-subtitle">
+      Если у вас отсутствует логин для входа, обратитесь к администратору
+    </p>
+    <form class="login-box" (ngSubmit)="login()">
+      <input
+        type="password"
+        [(ngModel)]="password"
+        placeholder="Логин"
+        class="login-input"
+      />
+      <button
+        class="login-btn"
+        type="submit"
+        [disabled]="loading"
+      >
+        @if (!loading) {
+        Войти
+        } @else {
+        Загрузка...
+        }
+      </button>
+      @if (error) {
+      <div class="login-error">
+        Ошибка входа
+      </div>
+      }
+    </form>
+  </div>
+</div>

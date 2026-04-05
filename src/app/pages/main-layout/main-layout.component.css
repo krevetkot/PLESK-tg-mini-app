@@ -17,8 +17,8 @@
   margin: auto;
   padding: 15px 20px;
   display: flex;
-  align-items: end;
-  justify-content: center;
+  flex-direction: column;
+  align-items: center;
   min-height: 50px;
 }
 
@@ -48,26 +48,23 @@
   padding-bottom: 80px;
 }
 
-/*!* Адаптивность *!*/
-/*@media (max-width: 768px) {*/
-/*  .main-header {*/
-/*    padding: 12px 0;*/
-/*  }*/
+/* блок с кнопкой */
+.header-actions {
+  width: 100%;
+  display: flex;
+  justify-content: flex-end; /* прижимаем вправо */
+  margin-top: 10px;
+}
 
-/*  .header-content {*/
-/*    padding: 30px 15px;*/
-/*  }*/
+/* сама кнопка */
+.header-btn {
+  padding: 8px 16px;
+  background: #fff;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
 
-/*  .logo-img {*/
-/*    width: 35px;*/
-/*    height: 35px;*/
-/*  }*/
-
-/*  .site-name {*/
-/*    font-size: 18px;*/
-/*  }*/
-
-/*  .content {*/
-/*    padding-bottom: 70px;*/
-/*  }*/
-/*}*/
+.header-btn:hover {
+  background: #ddd;
+}
