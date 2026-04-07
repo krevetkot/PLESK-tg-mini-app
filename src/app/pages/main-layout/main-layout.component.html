@@ -5,10 +5,21 @@
         <img src="logo.png" alt="Логотип" class="logo-img">
       </div>
 
-      @if (isAuthenticated){
-        <div class="header-actions">
-          <button class="header-btn"
-          (click)="logout()">Выйти из аккаунта</button>
+      @if (isAuthenticated) {
+      <div class="header-actions">
+        <div class="account-badge">
+          <div class="account-info">
+            <span class="account-label">Юр. лицо -</span>
+            <span class="account-name">{{ userName }}</span>
+          </div>
+        </div>
+
+          <button
+            class="header-btn"
+            (click)="logout()"
+          >
+            Выйти из аккаунта
+          </button>
         </div>
       }
 

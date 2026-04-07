@@ -52,19 +52,50 @@
 .header-actions {
   width: 100%;
   display: flex;
-  justify-content: flex-end; /* прижимаем вправо */
   margin-top: 10px;
+  justify-content: space-between;
 }
 
 /* сама кнопка */
 .header-btn {
-  padding: 8px 16px;
-  background: #fff;
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
+  padding: 2px 16px;
+  background:#fff;
+  border:none;
+  border-radius:6px;
+  cursor:pointer;
+  max-height: 30px;
+  font-size: 9px;
 }
 
 .header-btn:hover {
   background: #ddd;
+}
+
+.account-badge {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 2px 14px;
+  backdrop-filter: blur(4px);
+}
+
+/* текст аккаунта */
+.account-info {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.2;
+}
+
+.account-label {
+  font-size: 9px;
+  color: rgba(255, 255, 255, 0.75);
+}
+
+.account-name {
+  font-size: 9px;
+  font-weight: 600;
+  color: #fff;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }

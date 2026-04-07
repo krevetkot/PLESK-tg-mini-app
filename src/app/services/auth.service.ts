@@ -12,6 +12,9 @@ export class AuthService {
   private authStatus = new BehaviorSubject<boolean>(this.isAuthenticated());
 
   private readonly telegramService = inject(TelegramWebappService);
+  private readonly USER_NAME_STORAGE_KEY = 'tg_app_user_name';
+  private userNameSubject = new BehaviorSubject<string | null>(this.getStoredUserName());
+  userName$ = this.userNameSubject.asObservable();
 
   authStatus$: Observable<boolean> = this.authStatus.asObservable();
 
@@ -101,6 +104,8 @@ export class AuthService {
 
           if (data.status === "success") {
             this.setCookie(this.AUTH_COOKIE_NAME, 'true', this.COOKIE_MAX_AGE);
+            this.setStoredUserName(data.client.first_name);
+            this.userNameSubject.next(data.client.first_name);
             this.authStatus.next(true);
             resolve(true);
           } else {
@@ -150,6 +155,8 @@ export class AuthService {
         .then(data => {
           if (data.status === "success") {
             this.setCookie(this.AUTH_COOKIE_NAME, 'true', this.COOKIE_MAX_AGE);
+            this.setStoredUserName(data.client.first_name);
+            this.userNameSubject.next(data.client.first_name);
             this.authStatus.next(true);
             resolve(true);
           } else {
@@ -169,14 +176,40 @@ export class AuthService {
     })
       .then(() => {
         this.deleteCookie(this.AUTH_COOKIE_NAME);
+        this.clearStoredUserName();
+        this.userNameSubject.next(null);
         this.authStatus.next(false);
         return true;
       })
       .catch((err) => {
         console.error("Logout failed:", err);
         this.deleteCookie(this.AUTH_COOKIE_NAME);
+        this.clearStoredUserName();
+        this.userNameSubject.next(null);
         this.authStatus.next(false);
         return false;
       });
   }
+
+  private getStoredUserName(): string | null {
+    if (typeof localStorage === 'undefined') {
+      return null;
+    }
+    return localStorage.getItem(this.USER_NAME_STORAGE_KEY);
+  }
+
+  private setStoredUserName(name: string): void {
+    if (typeof localStorage === 'undefined') {
+      return;
+    }
+    localStorage.setItem(this.USER_NAME_STORAGE_KEY, name);
+  }
+
+  private clearStoredUserName(): void {
+    if (typeof localStorage === 'undefined') {
+      return;
+    }
+    localStorage.removeItem(this.USER_NAME_STORAGE_KEY);
+  }
 }
+

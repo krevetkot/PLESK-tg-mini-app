@@ -13,6 +13,7 @@ import {Subscription} from 'rxjs';
 export class MainLayoutComponent implements OnInit{
   private authSubscription!: Subscription;
   isAuthenticated: boolean = false;
+  userName: null | string = null;
   constructor(public authService: AuthService) {
   }
 
@@ -22,6 +23,10 @@ export class MainLayoutComponent implements OnInit{
         this.isAuthenticated = authenticated;
       }
     );
+
+    this.authService.userName$.subscribe(name => {
+      this.userName = name;
+    });
   }
 
   logout(){
